@@ -1,0 +1,15 @@
+SmallTextPad - License
+
+SmallTextPad is under a Freeware License Agreement (the "Agreement") is a legal agreement 
+between you ("Licensee"), the end-user, and wagemaker.co.uk for the use of this software product 
+("SmallTextPad") on non-commercial and for which source code is not available. According 
+to the Free Software Foundation (FSF), "freeware" is a loosely defined category and it has 
+no clear accepted definition, although FSF asks that free software such as (libre; unrestricted 
+and with source code available) should not be called freeware. 
+
+3rd Party - License
+
+* Icons made by Freepik from www.flaticon.com is licensed by CC BY 3.0
+* Eclipse and Eclipse Luna are trademarks of the Eclipse Foundation, Inc.
+* Java is a trademark or registered trademark of Oracle and/or its affiliates.
+* Any other names may be trademarks of their respective owners! 
