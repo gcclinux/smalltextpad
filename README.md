@@ -14,7 +14,7 @@ SmallTextPad is a Simple Java Text Editor and 100% FREE Application, it was writ
 
 Download the binary from package folder and run, you may need to install Java JRE first.
 
-$ java -jar SmallTextPad_1.4.5.jar
+$ java -jar SmallTextPad_1.4.5.jar<br>
 C:> java.exe -jar SmallTextPad_1.4.5.jar
 OR
 Run: SmallTextPad_1.4.5.exe
