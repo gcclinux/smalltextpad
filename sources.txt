@@ -7,6 +7,7 @@ src/wagemaker/co/uk/utility/ConfigFile.java
 src/wagemaker/co/uk/utility/STPFileCrypter.java
 src/wagemaker/co/uk/utility/LaunchBrowser.java
 src/wagemaker/co/uk/utility/getMyOS.java
+src/wagemaker/co/uk/utility/PasswordPrompter.java
 src/wagemaker/co/uk/utility/ConfigDir.java
 src/wagemaker/co/uk/utility/FontTheme.java
 src/wagemaker/co/uk/utility/logHistory.java

@@ -47,17 +47,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JPasswordField;
+import javax.swing.JLabel;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.BoxLayout;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import java.awt.IllegalComponentStateException;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultEditorKit;
@@ -103,146 +103,11 @@ import java.util.List;
 
 		// Helper to prompt for a password + repeat and return the confirmed password or null if cancelled
 		private String askForPassword(String title, String message, JFrame parent) {
-			while (true) {
-				JPasswordField pf1 = new JPasswordField(20);
-				JPasswordField pf2 = new JPasswordField(20);
-				JPanel panel = new JPanel(new java.awt.GridLayout(0, 1));
-				panel.add(new javax.swing.JLabel(labels.getString("label031")));
-				panel.add(pf1);
-				panel.add(new javax.swing.JLabel(labels.getString("label032")));
-				panel.add(pf2);
-
-				// Create a JOptionPane and wrap it in a JDialog so we can explicitly center it on screen
-				JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-				JDialog dialog = pane.createDialog(parent, title);
-				dialog.pack();
-				// DEBUG: print parent and dialog pre-centering info
-				if (DEBUG) {
-					if (parent != null) {
-						System.out.println("[DEBUG] Parent isShowing=" + parent.isShowing() + " parent.getX()=" + parent.getX() + " parent.getY()=" + parent.getY() + " parent.getWidth()=" + parent.getWidth() + " parent.getHeight()=" + parent.getHeight());
-						try {
-							java.awt.Point op = parent.getLocationOnScreen();
-							System.out.println("[DEBUG] Parent on-screen location: x=" + op.x + " y=" + op.y);
-						} catch (IllegalComponentStateException ice) {
-							System.out.println("[DEBUG] Parent on-screen location: not available (parent not showing)");
-						}
-					} else {
-						System.out.println("[DEBUG] Parent is null");
-					}
-					System.out.println("[DEBUG] Dialog pre-center size: width=" + dialog.getWidth() + " height=" + dialog.getHeight());
-				}
-				// Instead of relying only on setLocation before show (which can be ignored
-				// by some WSL/X window managers), reposition the dialog when it is actually
-				// opened (native peer mapped). Also schedule a short Timer to reapply the
-				// position a fraction later as a fallback for WMs that move windows right
-				// after mapping.
-				dialog.setModal(true);
-				final boolean prevAlwaysOnTop = dialog.isAlwaysOnTop();
-				try {
-					dialog.setAlwaysOnTop(true);
-				} catch (Exception e) {}
-
-				dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-					@Override
-					public void windowOpened(java.awt.event.WindowEvent we) {
-						// compute and set center once the dialog is opened/mapped
-						try {
-							if (parent != null && parent.isShowing()) {
-								java.awt.Point p = parent.getLocationOnScreen();
-								int px = p.x;
-								int py = p.y;
-								int pw = parent.getWidth();
-								int ph = parent.getHeight();
-								int dx = dialog.getWidth();
-								int dy = dialog.getHeight();
-								int cx = px + (pw - dx) / 2;
-								int cy = py + (ph - dy) / 2;
-								dialog.setLocation(cx, cy);
-								if (DEBUG) System.out.println("[DEBUG] (windowOpened) Dialog setLocation to cx=" + cx + " cy=" + cy + " (size: w=" + dialog.getWidth() + " h=" + dialog.getHeight() + ")");
-							} else {
-								dialog.setLocationRelativeTo(parent);
-								if (DEBUG) System.out.println("[DEBUG] (windowOpened) Dialog setLocationRelativeTo parent/screen");
-							}
-						} catch (java.awt.IllegalComponentStateException iced) {
-							// parent not yet showing or cannot determine on-screen position; fall back
-							dialog.setLocationRelativeTo(parent);
-						}
-
-						// Some window managers move windows immediately after mapping.
-						// Schedule a very short Timer to reapply the center once more.
-						try {
-							javax.swing.Timer t = new javax.swing.Timer(50, new java.awt.event.ActionListener() {
-								@Override
-								public void actionPerformed(java.awt.event.ActionEvent e) {
-									try {
-										if (parent != null && parent.isShowing()) {
-											java.awt.Point p2 = parent.getLocationOnScreen();
-											int px2 = p2.x;
-											int py2 = p2.y;
-											int pw2 = parent.getWidth();
-											int ph2 = parent.getHeight();
-											int dx2 = dialog.getWidth();
-											int dy2 = dialog.getHeight();
-											int cx2 = px2 + (pw2 - dx2) / 2;
-											int cy2 = py2 + (ph2 - dy2) / 2;
-											dialog.setLocation(cx2, cy2);
-											if (DEBUG) System.out.println("[DEBUG] (timer) Dialog re-setLocation to cx=" + cx2 + " cy=" + cy2 + " (size: w=" + dialog.getWidth() + " h=" + dialog.getHeight() + ")");
-										} else {
-											dialog.setLocationRelativeTo(parent);
-										}
-									} catch (Exception ex) {
-										// ignore; best-effort centering
-									}
-									((javax.swing.Timer) e.getSource()).stop();
-								}
-							});
-							t.setRepeats(false);
-							t.start();
-						} catch (Exception ex) {
-							// ignore timer failures
-						}
-
-						// Try to make sure the dialog is on top/focused
-						try {
-							dialog.toFront();
-							dialog.requestFocus();
-						} catch (Exception ex) {}
-					}
-				});
-
-				// Show the dialog (blocks since modal). The centering will be applied
-				// when the dialog actually opens (windowOpened) and by the short Timer.
-				dialog.setVisible(true);
-
-				// restore always-on-top if possible
-				try {
-					dialog.setAlwaysOnTop(prevAlwaysOnTop);
-				} catch (Exception e) {}
-				// After dialog is visible (and closed) we can print final on-screen position
-									if (DEBUG) {
-										try {
-											java.awt.Point dp = dialog.getLocationOnScreen();
-											System.out.println("[DEBUG] Dialog on-screen location after show: x=" + dp.x + " y=" + dp.y + " size: w=" + dialog.getWidth() + " h=" + dialog.getHeight());
-										} catch (IllegalComponentStateException ice2) {
-											System.out.println("[DEBUG] Dialog on-screen location: not available");
-										}
-									}
-				Object selectedValue = pane.getValue();
-				if (selectedValue == null) return null;
-				int result;
-				if (selectedValue instanceof Integer) result = ((Integer) selectedValue).intValue(); else result = JOptionPane.CLOSED_OPTION;
-				if (result != JOptionPane.OK_OPTION) return null;
-				String p1 = new String(pf1.getPassword());
-				String p2 = new String(pf2.getPassword());
-				if (p1.length() < 7) {
-					JOptionPane.showMessageDialog(parent, labels.getString("label032"), title, JOptionPane.ERROR_MESSAGE);
-					continue;
-				}
-				if (!p1.equals(p2)) {
-					JOptionPane.showMessageDialog(parent, labels.getString("label035"), title, JOptionPane.ERROR_MESSAGE);
-					continue;
-				}
-				return p1;
+			// delegate to shared PasswordPrompter
+			try {
+				return wagemaker.co.uk.utility.PasswordPrompter.askForPassword(parent, title, labels, DEBUG);
+			} catch (Exception e) {
+				return null;
 			}
 		}
 		
@@ -1093,12 +958,141 @@ import java.util.List;
 					    	 
 				    		STPFileCrypter.main(FullPathName, codeGet, "encrypt"); 	
 							textComp.setText(null);
-							setTitle(Title+ " ~ ##### ENCRYPTED #####");
-							
+							// Reset title to the normal app title
+							setTitle(Title);
+
 							FileTitle = "ENCRYPTED";
+							// Show a friendly centered dialog announcing the encrypted filename
+							try {
+								String encName = (file.toString() + "." + Details.encryptionExtention);
+								String baseName = new java.io.File(encName).getName();
+
+								// Build message with simple HTML for centering and newlines
+								StringBuilder sb = new StringBuilder();
+								sb.append("<html><body style='text-align:center; background-color: rgb(255,105,23);'>");
+								sb.append("<div style='padding:20px;'>");
+								sb.append("<div style='font-family: Arial; font-size:16px; font-weight:bold; color:#000000;'>Encrypted</div>");
+								sb.append("<div style='height:10px;'></div>");
+								sb.append("<div style='font-family: Arial; font-size:14px; color:#000000;'>" + baseName + "</div>");
+								sb.append("</div>");
+								sb.append("</body></html>");
+
+								// Create a custom modal dialog so we can explicitly center it
+								final String base = baseName;
+								JDialog dlg = new JDialog(Launcher.this, true);
+								dlg.setUndecorated(false);
+								// Use GridBag to center the content both vertically and horizontally.
+								JPanel contentPanel = new JPanel(new java.awt.GridBagLayout());
+								contentPanel.setBackground(Details.ORANGE);
+								contentPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 24, 16, 24));
+
+								JPanel inner = new JPanel();
+								inner.setOpaque(false);
+								inner.setLayout(new BoxLayout(inner, BoxLayout.Y_AXIS));
+
+								JLabel titleLbl = new JLabel("Encrypted");
+								titleLbl.setFont(FontTheme.size20b);
+								titleLbl.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+
+								JLabel nameLbl = new JLabel(base);
+								nameLbl.setFont(FontTheme.size15p);
+								nameLbl.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+
+								inner.add(titleLbl);
+								inner.add(javax.swing.Box.createVerticalStrut(8));
+								inner.add(nameLbl);
+								inner.add(javax.swing.Box.createVerticalStrut(12));
+
+								JButton okBtn = new JButton("OK");
+								okBtn.setFont(FontTheme.size15b);
+								okBtn.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+								okBtn.addActionListener(ae -> dlg.dispose());
+								inner.add(okBtn);
+
+								contentPanel.add(inner, new java.awt.GridBagConstraints());
+
+								dlg.getContentPane().add(contentPanel);
+								dlg.pack();
+								// Scale dialog: increase width by 20% and decrease height by 30%
+								java.awt.Dimension d = dlg.getSize();
+								int newW = Math.max((int) Math.round(d.width * 1.2), d.width + 20);
+								int newH = Math.max((int) Math.round(d.height * 0.7), 48);
+								dlg.setSize(newW, newH);
+								dlg.setResizable(false);
+								// Use the same robust centering approach as PasswordPrompter:
+								// center on windowOpened and also schedule a short Timer to re-center
+								final boolean prevAlwaysOnTop = dlg.isAlwaysOnTop();
+								try { dlg.setAlwaysOnTop(true); } catch (Exception e) {}
+
+								dlg.addWindowListener(new java.awt.event.WindowAdapter() {
+									@Override
+									public void windowOpened(java.awt.event.WindowEvent we) {
+										try {
+											if (Launcher.this != null && Launcher.this.isShowing()) {
+												java.awt.Point p = Launcher.this.getLocationOnScreen();
+												int px = p.x;
+												int py = p.y;
+												int pw = Launcher.this.getWidth();
+												int ph = Launcher.this.getHeight();
+												int dx = dlg.getWidth();
+												int dy = dlg.getHeight();
+												int cx = px + (pw - dx) / 2;
+												int cy = py + (ph - dy) / 2;
+												dlg.setLocation(cx, cy);
+											} else {
+												dlg.setLocationRelativeTo(Launcher.this);
+											}
+										} catch (java.awt.IllegalComponentStateException iced) {
+											dlg.setLocationRelativeTo(Launcher.this);
+										}
+
+										try {
+											javax.swing.Timer t = new javax.swing.Timer(50, new java.awt.event.ActionListener() {
+												@Override
+												public void actionPerformed(java.awt.event.ActionEvent e) {
+													try {
+														if (Launcher.this != null && Launcher.this.isShowing()) {
+															java.awt.Point p2 = Launcher.this.getLocationOnScreen();
+															int px2 = p2.x;
+															int py2 = p2.y;
+															int pw2 = Launcher.this.getWidth();
+															int ph2 = Launcher.this.getHeight();
+															int dx2 = dlg.getWidth();
+															int dy2 = dlg.getHeight();
+															int cx2 = px2 + (pw2 - dx2) / 2;
+															int cy2 = py2 + (ph2 - dy2) / 2;
+															dlg.setLocation(cx2, cy2);
+														} else {
+															dlg.setLocationRelativeTo(Launcher.this);
+														}
+													} catch (Exception ex) {}
+													((javax.swing.Timer) e.getSource()).stop();
+												}
+											});
+											t.setRepeats(false);
+											t.start();
+										} catch (Exception ex) {}
+
+										try { dlg.toFront(); dlg.requestFocus(); } catch (Exception ex) {}
+									}
+								});
+
+								dlg.setVisible(true);
+
+								try { dlg.setAlwaysOnTop(prevAlwaysOnTop); } catch (Exception e) {}
+							} catch (Exception ex) {
+								// fallback: simple JOptionPane centered relative to Launcher
+								String encName = (file.toString() + "." + Details.encryptionExtention);
+								String baseName2 = new java.io.File(encName).getName();
+								JOptionPane.showMessageDialog(Launcher.this, "Encrypted\n" + baseName2);
+							}
 							
 					    }	
-					    logHistory.main(file.toString(), "encrypted");
+						// The encryptor writes a new file with the encryption extension
+						// (e.g. original.txt -> original.txt.sstp). Record that encrypted
+						// filename in the history rather than the original plaintext path.
+						String encryptedPath = file.toString() + "." + Details.encryptionExtention;
+						logHistory.main(encryptedPath, "encrypted");
 					    
 				   }
 			}
@@ -1178,8 +1172,8 @@ import java.util.List;
 	 
 	 mnuItemHisView.setAccelerator(KeyStroke.getKeyStroke('H', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 	 mnuItemHisDelete.setAccelerator(KeyStroke.getKeyStroke('D', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
+	  mnuItemHist.add(mnuItemHisOpen);
 	 mnuItemHist.add(mnuItemHisView);
-	 mnuItemHist.add(mnuItemHisOpen);
 	 mnuItemHist.add(mnuItemHisDelete);
 	 
 	 final ImageIcon printIcon = new ImageIcon(getClass().getResource("/printer.png"));
