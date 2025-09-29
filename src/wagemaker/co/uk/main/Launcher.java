@@ -625,7 +625,7 @@ import java.util.List;
 		        			if (selectedOption == JOptionPane.YES_OPTION) {
 		        				try 
 		        		        {
-		        					LaunchBrowser.launcher("http://www.wagemaker.co.uk/?page_id=74");
+		        					LaunchBrowser.launcher("https://github.com/gcclinux/smalltextpad");
 		        		        }           
 		        		        catch (Exception e) {}
 		        			} 	
@@ -1114,7 +1114,7 @@ import java.util.List;
 			Action lastAction = new AbstractAction("", lastIcon) {
 				private static final long serialVersionUID = 1L;
 				public void actionPerformed(ActionEvent ev) {
-					LaunchBrowser.launcher("http://www.wagemaker.co.uk");
+					LaunchBrowser.launcher("https://github.com/gcclinux/smalltextpad");
 				}
 			};
 			bar.add(lastAction);
