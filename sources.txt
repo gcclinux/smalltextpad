@@ -13,6 +13,7 @@ src/wagemaker/co/uk/utility/logHistory.java
 src/wagemaker/co/uk/utility/SystemOS.java
 src/wagemaker/co/uk/utility/Details.java
 src/wagemaker/co/uk/lang/LangS.java
+src/wagemaker/co/uk/gui/HistoryViewer.java
 src/wagemaker/co/uk/gui/PageLoader.java
 src/wagemaker/co/uk/gui/About.java
 src/wagemaker/co/uk/gui/DisplayReport.java

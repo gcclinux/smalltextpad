@@ -95,6 +95,9 @@ import java.util.List;
 		static String FullPathName = null;
 		JFrame frameEncryption = new JFrame();
 
+		// Keep a reference to the running Launcher so other UI (history viewer) can open files
+		private static Launcher INSTANCE = null;
+
 		// Toggle debug output for dialogs (set to true to enable debug prints)
 		private static final boolean DEBUG = false;
 
@@ -285,6 +288,8 @@ import java.util.List;
 	public Launcher(String args) {
 		
 	 super(Title);
+	 // register this instance
+	 INSTANCE = this;
 	// Use the main window as the parent for encryption dialogs so they center properly
 	frameEncryption = this;
 		// Check History File	
@@ -1159,6 +1164,7 @@ import java.util.List;
 	 mnuItemHist.setIcon(new ImageIcon(getClass().getResource("/history.png")));
 	 JMenuItem mnuItemHisView = new JMenuItem(labels.getString("label014"), new ImageIcon(getClass().getResource("/history.png")));
 	 JMenuItem mnuItemHisDelete = new JMenuItem(labels.getString("label015"), new ImageIcon(getClass().getResource("/delete.png")));
+	 JMenuItem mnuItemHisOpen = new JMenuItem(labels.getString("label009"), new ImageIcon(getClass().getResource("/open.png")));
 	 
 	 file.add(mnuItemHist);
 	 mnuItemOpen.setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
@@ -1173,6 +1179,7 @@ import java.util.List;
 	 mnuItemHisView.setAccelerator(KeyStroke.getKeyStroke('H', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 	 mnuItemHisDelete.setAccelerator(KeyStroke.getKeyStroke('D', Toolkit.getDefaultToolkit ().getMenuShortcutKeyMaskEx()));
 	 mnuItemHist.add(mnuItemHisView);
+	 mnuItemHist.add(mnuItemHisOpen);
 	 mnuItemHist.add(mnuItemHisDelete);
 	 
 	 final ImageIcon printIcon = new ImageIcon(getClass().getResource("/printer.png"));
@@ -1311,6 +1318,14 @@ import java.util.List;
 				}
 			}
 		});
+
+	 mnuItemHisOpen.addActionListener(new ActionListener() {
+	     @Override
+	     public void actionPerformed(ActionEvent e) {
+			// Launch the history viewer dialog
+			wagemaker.co.uk.gui.HistoryViewer.Launch();
+	     }
+	 });
 	 
 	 mnuItemHisView.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -1601,6 +1616,31 @@ import java.util.List;
 	protected JTextComponent getTextComponent() { 
 		return textComp; 
 		}
+
+	/**
+	 * Try to open a file by path in the running Launcher instance.
+	 * Returns true if the file was successfully opened.
+	 */
+	public static boolean openFileFromPath(String path) {
+		if (INSTANCE == null) return false;
+		final File f = new File(path);
+		if (!f.exists() || !f.isFile()) return false;
+		try {
+			java.io.FileReader reader = new java.io.FileReader(f);
+			INSTANCE.getTextComponent().read(reader, null);
+			reader.close();
+			INSTANCE.setTitle(Title+" ~ " + f.getName());
+			Launcher.FileTitle = f.getName();
+			Launcher.FullPathName = f.getAbsolutePath();
+			Launcher.FilePathTrue = f;
+			logHistory.main(f.getAbsolutePath(), "opened");
+			INSTANCE.undoRedo();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	public class ExitAction extends AbstractAction {
 		private static final long serialVersionUID = 1L;
