@@ -84,6 +84,9 @@ encrypted.png — Example of a file marked as encrypted (encrypted file indicato
 decrypting.png — Decrypting process / password prompt while decrypting a file   
 ![Decrypting prompt](screenshots/decrypting.png)   
    
+history-picker.png -  New History file pickers   
+![New History Picker](screenshots/history-picker.png)   
+
 old-history.png — History view (legacy history display)   
 ![History view (old)](screenshots/old-history.png)   
 
