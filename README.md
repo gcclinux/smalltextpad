@@ -71,6 +71,22 @@ java -cp bin wagemaker.co.uk.main.Launcher
 
 If you'd like help packaging this as a Snap, Flatpak or providing distribution builds, I can add packaging instructions and CI steps.
 
+## Screenshots
+
+Below are a few screenshots included in the repository under the `screenshots/` folder. You can open these locally or view them on GitHub when the repo is published.
+
+languages.png — Language selector / available language options   
+![Languages selector](screenshots/languages.png)
+   
+encrypted.png — Example of a file marked as encrypted (encrypted file indicator)   
+![Encrypted file marker](screenshots/encrypted.png)   
+
+decrypting.png — Decrypting process / password prompt while decrypting a file   
+![Decrypting prompt](screenshots/decrypting.png)   
+   
+old-history.png — History view (legacy history display)   
+![History view (old)](screenshots/old-history.png)   
+
 # smalltextpad
 
 SmallTextPad with Encryption and multi-language
