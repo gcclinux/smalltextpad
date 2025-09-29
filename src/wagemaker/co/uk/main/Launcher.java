@@ -47,13 +47,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JDialog;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JPasswordField;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import java.awt.IllegalComponentStateException;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultEditorKit;
@@ -90,6 +94,154 @@ import java.util.List;
 		static File FilePathTrue = null;
 		static String FullPathName = null;
 		JFrame frameEncryption = new JFrame();
+
+		// Toggle debug output for dialogs (set to true to enable debug prints)
+		private static final boolean DEBUG = false;
+
+		// Helper to prompt for a password + repeat and return the confirmed password or null if cancelled
+		private String askForPassword(String title, String message, JFrame parent) {
+			while (true) {
+				JPasswordField pf1 = new JPasswordField(20);
+				JPasswordField pf2 = new JPasswordField(20);
+				JPanel panel = new JPanel(new java.awt.GridLayout(0, 1));
+				panel.add(new javax.swing.JLabel(labels.getString("label031")));
+				panel.add(pf1);
+				panel.add(new javax.swing.JLabel(labels.getString("label032")));
+				panel.add(pf2);
+
+				// Create a JOptionPane and wrap it in a JDialog so we can explicitly center it on screen
+				JOptionPane pane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+				JDialog dialog = pane.createDialog(parent, title);
+				dialog.pack();
+				// DEBUG: print parent and dialog pre-centering info
+				if (DEBUG) {
+					if (parent != null) {
+						System.out.println("[DEBUG] Parent isShowing=" + parent.isShowing() + " parent.getX()=" + parent.getX() + " parent.getY()=" + parent.getY() + " parent.getWidth()=" + parent.getWidth() + " parent.getHeight()=" + parent.getHeight());
+						try {
+							java.awt.Point op = parent.getLocationOnScreen();
+							System.out.println("[DEBUG] Parent on-screen location: x=" + op.x + " y=" + op.y);
+						} catch (IllegalComponentStateException ice) {
+							System.out.println("[DEBUG] Parent on-screen location: not available (parent not showing)");
+						}
+					} else {
+						System.out.println("[DEBUG] Parent is null");
+					}
+					System.out.println("[DEBUG] Dialog pre-center size: width=" + dialog.getWidth() + " height=" + dialog.getHeight());
+				}
+				// Instead of relying only on setLocation before show (which can be ignored
+				// by some WSL/X window managers), reposition the dialog when it is actually
+				// opened (native peer mapped). Also schedule a short Timer to reapply the
+				// position a fraction later as a fallback for WMs that move windows right
+				// after mapping.
+				dialog.setModal(true);
+				final boolean prevAlwaysOnTop = dialog.isAlwaysOnTop();
+				try {
+					dialog.setAlwaysOnTop(true);
+				} catch (Exception e) {}
+
+				dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+					@Override
+					public void windowOpened(java.awt.event.WindowEvent we) {
+						// compute and set center once the dialog is opened/mapped
+						try {
+							if (parent != null && parent.isShowing()) {
+								java.awt.Point p = parent.getLocationOnScreen();
+								int px = p.x;
+								int py = p.y;
+								int pw = parent.getWidth();
+								int ph = parent.getHeight();
+								int dx = dialog.getWidth();
+								int dy = dialog.getHeight();
+								int cx = px + (pw - dx) / 2;
+								int cy = py + (ph - dy) / 2;
+								dialog.setLocation(cx, cy);
+								if (DEBUG) System.out.println("[DEBUG] (windowOpened) Dialog setLocation to cx=" + cx + " cy=" + cy + " (size: w=" + dialog.getWidth() + " h=" + dialog.getHeight() + ")");
+							} else {
+								dialog.setLocationRelativeTo(parent);
+								if (DEBUG) System.out.println("[DEBUG] (windowOpened) Dialog setLocationRelativeTo parent/screen");
+							}
+						} catch (java.awt.IllegalComponentStateException iced) {
+							// parent not yet showing or cannot determine on-screen position; fall back
+							dialog.setLocationRelativeTo(parent);
+						}
+
+						// Some window managers move windows immediately after mapping.
+						// Schedule a very short Timer to reapply the center once more.
+						try {
+							javax.swing.Timer t = new javax.swing.Timer(50, new java.awt.event.ActionListener() {
+								@Override
+								public void actionPerformed(java.awt.event.ActionEvent e) {
+									try {
+										if (parent != null && parent.isShowing()) {
+											java.awt.Point p2 = parent.getLocationOnScreen();
+											int px2 = p2.x;
+											int py2 = p2.y;
+											int pw2 = parent.getWidth();
+											int ph2 = parent.getHeight();
+											int dx2 = dialog.getWidth();
+											int dy2 = dialog.getHeight();
+											int cx2 = px2 + (pw2 - dx2) / 2;
+											int cy2 = py2 + (ph2 - dy2) / 2;
+											dialog.setLocation(cx2, cy2);
+											if (DEBUG) System.out.println("[DEBUG] (timer) Dialog re-setLocation to cx=" + cx2 + " cy=" + cy2 + " (size: w=" + dialog.getWidth() + " h=" + dialog.getHeight() + ")");
+										} else {
+											dialog.setLocationRelativeTo(parent);
+										}
+									} catch (Exception ex) {
+										// ignore; best-effort centering
+									}
+									((javax.swing.Timer) e.getSource()).stop();
+								}
+							});
+							t.setRepeats(false);
+							t.start();
+						} catch (Exception ex) {
+							// ignore timer failures
+						}
+
+						// Try to make sure the dialog is on top/focused
+						try {
+							dialog.toFront();
+							dialog.requestFocus();
+						} catch (Exception ex) {}
+					}
+				});
+
+				// Show the dialog (blocks since modal). The centering will be applied
+				// when the dialog actually opens (windowOpened) and by the short Timer.
+				dialog.setVisible(true);
+
+				// restore always-on-top if possible
+				try {
+					dialog.setAlwaysOnTop(prevAlwaysOnTop);
+				} catch (Exception e) {}
+				// After dialog is visible (and closed) we can print final on-screen position
+									if (DEBUG) {
+										try {
+											java.awt.Point dp = dialog.getLocationOnScreen();
+											System.out.println("[DEBUG] Dialog on-screen location after show: x=" + dp.x + " y=" + dp.y + " size: w=" + dialog.getWidth() + " h=" + dialog.getHeight());
+										} catch (IllegalComponentStateException ice2) {
+											System.out.println("[DEBUG] Dialog on-screen location: not available");
+										}
+									}
+				Object selectedValue = pane.getValue();
+				if (selectedValue == null) return null;
+				int result;
+				if (selectedValue instanceof Integer) result = ((Integer) selectedValue).intValue(); else result = JOptionPane.CLOSED_OPTION;
+				if (result != JOptionPane.OK_OPTION) return null;
+				String p1 = new String(pf1.getPassword());
+				String p2 = new String(pf2.getPassword());
+				if (p1.length() < 7) {
+					JOptionPane.showMessageDialog(parent, labels.getString("label032"), title, JOptionPane.ERROR_MESSAGE);
+					continue;
+				}
+				if (!p1.equals(p2)) {
+					JOptionPane.showMessageDialog(parent, labels.getString("label035"), title, JOptionPane.ERROR_MESSAGE);
+					continue;
+				}
+				return p1;
+			}
+		}
 		
 	public static void main(String[] args) {
 		
@@ -254,28 +406,11 @@ import java.util.List;
 						   //System.out.println("encrypted file");
 						   String justName = file.getName();
 						      
-						   String codeGet = new String();
-						   
-						   while (codeGet.length() <= 7) {
-							   codeGet = JOptionPane.showInputDialog(
-								        frameEncryption, 
-								        labels.getString("label031")+":\n"+labels.getString("label001")+": "+justName, 
-								        "SmallTextPad  "+labels.getString("label033"), 
-								        JOptionPane.OK_CANCEL_OPTION
-								    );	
-							   if ((codeGet == null) || (codeGet.length() == 0)) {
-								   break;
-							   }
-						   }
+						   String codeGet = askForPassword("SmallTextPad  "+labels.getString("label033"), labels.getString("label031")+":\n"+labels.getString("label001")+": "+justName, frameEncryption);
 						   
 						   if ((codeGet != null) && (codeGet.length() > 0)) {
 							   while (STPFileCrypter.main(fileName, codeGet, "decrypt") == false) {
-								   codeGet = JOptionPane.showInputDialog(
-									        frameEncryption, 
-									        labels.getString("label035")+":\n"+labels.getString("label001")+": "+justName, 
-									        "SmallTextPad  "+labels.getString("label033"), 
-									        JOptionPane.OK_CANCEL_OPTION
-									    );	
+								   codeGet = askForPassword("SmallTextPad  "+labels.getString("label033"), labels.getString("label035")+":\n"+labels.getString("label001")+": "+justName, frameEncryption);
 								   if ((codeGet == null) || (codeGet.length() == 0)) {
 									   break;
 								   }
@@ -660,34 +795,17 @@ import java.util.List;
 						   } else if (fileName.endsWith(Details.encryptionExtention)){
 							   
 							   String justName = file.getName();
-							   String codeGet = new String();
+							   String codeGet = askForPassword("SmallTextPad  "+labels.getString("label033"), labels.getString("label031")+":\n"+labels.getString("label001")+": "+justName, frameEncryption);
 							   
-							   while (codeGet.length() <= 7) {
-								   codeGet = JOptionPane.showInputDialog(
-									        frameEncryption, 
-									        labels.getString("label031")+":\n"+labels.getString("label001")+": "+justName, 
-									        "SmallTextPad  "+labels.getString("label033"), 
-									        JOptionPane.OK_CANCEL_OPTION
-									    );	
+							   if ((codeGet != null) && (codeGet.length() > 0)) {
+							   while (STPFileCrypter.main(fileName, codeGet, "decrypt") == false) {
+								   codeGet = askForPassword("SmallTextPad  "+labels.getString("label033"), labels.getString("label035")+":\n"+labels.getString("label001")+": "+justName, frameEncryption);
 								   if ((codeGet == null) || (codeGet.length() == 0)) {
 									   break;
 								   }
 							   }
-							   
-							   if ((codeGet != null) && (codeGet.length() > 0)) {
-								   while (STPFileCrypter.main(fileName, codeGet, "decrypt") == false) {
-									   codeGet = JOptionPane.showInputDialog(
-										        frameEncryption, 
-										        labels.getString("label035")+":\n"+labels.getString("label001")+": "+justName, 
-										        "SmallTextPad  "+labels.getString("label033"), 
-										        JOptionPane.OK_CANCEL_OPTION
-										    );	
-									   if ((codeGet == null) || (codeGet.length() == 0)) {
-										   break;
-									   }
-								   }
-			
-							   }
+
+						   }
 	
 							   if(filePath.endsWith("."+Details.encryptionExtention)) {
 								   if (filePath.indexOf(".") > 0)
@@ -962,19 +1080,7 @@ import java.util.List;
 					    		 labels.getString("label026"), "ERROR", JOptionPane.ERROR_MESSAGE);
 					   }
 					   
-					   String codeGet = new String();
-					   
-					   while (codeGet.length() <= 7) {
-						   codeGet = JOptionPane.showInputDialog(
-							        frameEncryption, 
-							        labels.getString("label031")+":\n  *** "+labels.getString("label032")+" ***", 
-							        "SmallTextPad "+ labels.getString("label033"), 
-							        JOptionPane.OK_CANCEL_OPTION
-							    );	
-						   if ((codeGet == null) || (codeGet.length() == 0)) {
-							   break;
-						   }
-					   }
+						   String codeGet = askForPassword("SmallTextPad "+ labels.getString("label033"), labels.getString("label031")+":\n  *** "+labels.getString("label032")+" ***", frameEncryption);
 					    if (codeGet != null && codeGet.length() >= 7) {	    	 
 							   if(!FullPathName.endsWith(".txt")) {
 								   FullPathName = (FullPathName + ".txt");
@@ -1380,19 +1486,7 @@ import java.util.List;
 						   
 						   String justName = file.getName();
 						      
-						   String codeGet = new String();
-						   
-						   while (codeGet.length() <= 7) {
-							   codeGet = JOptionPane.showInputDialog(
-								        frameEncryption, 
-								        labels.getString("label031")+":\n"+labels.getString("label001")+": "+justName, 
-								        "SmallTextPad  "+labels.getString("label033"), 
-								        JOptionPane.OK_CANCEL_OPTION
-								    );	
-							   if ((codeGet == null) || (codeGet.length() == 0)) {
-								   break;
-							   }
-						   }
+						   String codeGet = askForPassword("SmallTextPad  "+labels.getString("label033"), labels.getString("label031")+":\n"+labels.getString("label001")+": "+justName, frameEncryption);
 						   
 						   if ((codeGet != null) && (codeGet.length() > 0)) {
 							   while (STPFileCrypter.main(fileName, codeGet, "decrypt") == false) {
