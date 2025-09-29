@@ -1,10 +1,10 @@
 package wagemaker.co.uk.main;
 
 /******************************************************************************************************
- * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2010-2021
+ * @author by Ricardo Wagemaker
  * @title SmallTextPad
- * @version 1.4.2
- * @since   2010 - 2021
+ * @version 1.5.0
+ * @since   2010 - 2025
  * @License MIT
  ******************************************************************************************************/
 
@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -71,12 +72,14 @@ import wagemaker.co.uk.utility.LaunchBrowser;
 import wagemaker.co.uk.utility.STPFileCrypter;
 import wagemaker.co.uk.utility.logHistory;
 import wagemaker.co.uk.lang.LangS;
+import java.util.ArrayList;
+import java.util.List;
 
 	public class Launcher extends JFrame {
 	
 		private static final long serialVersionUID = 1L;
 		
-		Locale locale = new Locale(LangS.getLanguage());
+		Locale locale = Locale.of(LangS.getLanguage());
 		ResourceBundle labels = ResourceBundle.getBundle("wagemaker.co.uk.lang.LabelsBundle", locale);
 	
 		private JTextComponent textComp;
@@ -130,7 +133,8 @@ import wagemaker.co.uk.lang.LangS;
 	public Launcher(String args) {
 		
 	 super(Title);
-	 
+	// Use the main window as the parent for encryption dialogs so they center properly
+	frameEncryption = this;
 		// Check History File	
 		File historyCheck;
 		try {
@@ -463,7 +467,7 @@ import wagemaker.co.uk.lang.LangS;
 		 
 		   try
 		   {
-		     URL version = new URL(Details.versionFile);
+			 URL version = new URI(Details.versionFile).toURL();
 		     URLConnection conn = version.openConnection();
 		     conn.setConnectTimeout(5000);
 		     conn.connect();
@@ -922,8 +926,8 @@ import wagemaker.co.uk.lang.LangS;
 	
 			public void actionPerformed(ActionEvent ev) {
 				
-				   if (FileTitle == null || FileTitle.contains("###")) {
-					    	JOptionPane.showMessageDialog(null, labels.getString("label034"));
+				if (FileTitle == null || FileTitle.contains("###")) {
+							JOptionPane.showMessageDialog(Launcher.this, labels.getString("label034"));
 					     return;
 				   }
 					
@@ -936,10 +940,10 @@ import wagemaker.co.uk.lang.LangS;
 							UIManager.put("Panel.background",  Details.ORANGE);
 							UIManager.put("OptionPane.background", Details.ORANGE);
 							
-							JOptionPane.showMessageDialog(null, "\n"
-									+ "  Only (txt) files can be encrypted!  "
-									+ "\n" + "\n", null,
-									JOptionPane.PLAIN_MESSAGE);
+			    JOptionPane.showMessageDialog(Launcher.this, "\n"
+				    + "  Only (txt) files can be encrypted!  "
+				    + "\n" + "\n", null,
+				    JOptionPane.PLAIN_MESSAGE);
 	
 				   } else {
 					   File file = FilePathTrue;
@@ -1029,8 +1033,7 @@ import wagemaker.co.uk.lang.LangS;
 	 
 	 JMenuItem mnuItemAbout = new JMenuItem(labels.getString("label005"), new ImageIcon(getClass().getResource("/about.png"))); // Sub-Menu About Entry
 	 JMenuItem mnuItemSupport = new JMenuItem(labels.getString("label006"), new ImageIcon(getClass().getResource("/support.png"))); // Sub-Menu About Entry
-	 JMenuItem mnuItemTwitter = new JMenuItem(labels.getString("label007"), new ImageIcon(getClass().getResource("/twitter.png"))); // Sub-Menu About Entry
-	 JMenuItem mnuItemPayPal = new JMenuItem(labels.getString("label008"), new ImageIcon(getClass().getResource("/paypal.png"))); // Sub-Menu About Entry
+ 	// Twitter and PayPal menu items removed
 	 JMenuItem mnuItemOpen = new JMenuItem(labels.getString("label009"), new ImageIcon(getClass().getResource("/open.png"))); // Sub-Menu About Entry
 	 JMenuItem mnuItemSave = new JMenuItem(labels.getString("label010"), new ImageIcon(getClass().getResource("/save.png"))); // Sub-Menu About Entry
 	 JMenuItem mnuItemExit = new JMenuItem(labels.getString("label011"), new ImageIcon(getClass().getResource("/exit.png"))); // Sub-Menu About Entry
@@ -1077,64 +1080,54 @@ import wagemaker.co.uk.lang.LangS;
 	 edit.add(textComp.getActionMap().get(DefaultEditorKit.selectWordAction));
 	 edit.add(textComp.getActionMap().get(DefaultEditorKit.selectAllAction));
 	
-	 help.add(mnuItemPayPal);
-	 help.add(mnuItemTwitter);
 	 help.add(mnuItemSupport);
 	 help.add(mnuItemAbout);
 	 
 	 lang_en.addActionListener(new ActionListener() {
 	     @Override
 	     public void actionPerformed(ActionEvent e) { 
-				LangS.setLanguage("en");
-				JOptionPane.showMessageDialog(null, "\n"
-						+ "You need to restart the application", null, JOptionPane.PLAIN_MESSAGE);
-				Position.setPosX(getX());
-				Position.setPosY(getY());
-				Size.setFrameHeight(getHeight());
-				Size.setFrameWidth(getWidth());
-				System.exit(0);				
+			LangS.setLanguage("en");
+			Position.setPosX(getX());
+			Position.setPosY(getY());
+			Size.setFrameHeight(getHeight());
+			Size.setFrameWidth(getWidth());
+			restartApplication();
 	     }
 	 });
 	 
 	 lang_nl.addActionListener(new ActionListener() {
 	     @Override
 	     public void actionPerformed(ActionEvent e) { 
-				LangS.setLanguage("nl");
-				JOptionPane.showMessageDialog(null, "\n"
-						+ "U moet de applicatie opnieuw starten", null, JOptionPane.PLAIN_MESSAGE);
-				Position.setPosX(getX());
-				Position.setPosY(getY());
-				Size.setFrameHeight(getHeight());
-				Size.setFrameWidth(getWidth());
-				System.exit(0);
+			LangS.setLanguage("nl");
+			Position.setPosX(getX());
+			Position.setPosY(getY());
+			Size.setFrameHeight(getHeight());
+			Size.setFrameWidth(getWidth());
+			restartApplication();
 	     }
 	 });
 	 
 	 lang_pt.addActionListener(new ActionListener() {
 	     @Override
 	     public void actionPerformed(ActionEvent e) { 
-				LangS.setLanguage("pt");
-				JOptionPane.showMessageDialog(null, "\n"
-						+ "Você precisa reiniciar o aplicativo", null, JOptionPane.PLAIN_MESSAGE);
-				Position.setPosX(getX());
-				Position.setPosY(getY());
-				Size.setFrameHeight(getHeight());
-				Size.setFrameWidth(getWidth());
-				System.exit(0);
+			LangS.setLanguage("pt");
+			Position.setPosX(getX());
+			Position.setPosY(getY());
+			Size.setFrameHeight(getHeight());
+			Size.setFrameWidth(getWidth());
+			restartApplication();
 	     }
 	 });
 	 
 	 lang_pl.addActionListener(new ActionListener() {
 	     @Override
 	     public void actionPerformed(ActionEvent e) { 
-				LangS.setLanguage("pl");
-				JOptionPane.showMessageDialog(null, "\n"
-						+ "Musisz ponownie uruchomić aplikację", null, JOptionPane.PLAIN_MESSAGE);
-				Position.setPosX(getX());
-				Position.setPosY(getY());
-				Size.setFrameHeight(getHeight());
-				Size.setFrameWidth(getWidth());
-				System.exit(0);
+			LangS.setLanguage("pl");
+			Position.setPosX(getX());
+			Position.setPosY(getY());
+			Size.setFrameHeight(getHeight());
+			Size.setFrameWidth(getWidth());
+			restartApplication();
 	     }
 	 });
 	 
@@ -1177,10 +1170,10 @@ import wagemaker.co.uk.lang.LangS;
 						UIManager.put("Panel.background",  Details.ORANGE);
 						UIManager.put("OptionPane.background", Details.ORANGE);
 						
-						JOptionPane.showMessageDialog(null, "\n"
-								+ "  FAILED TO DELETE SmallTextPad HISTORY "
-								+ "\n" + "\n", Details.history,
-								JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(Launcher.this, "\n"
+						+ "  FAILED TO DELETE SmallTextPad HISTORY "
+						+ "\n" + "\n", Details.history,
+						JOptionPane.PLAIN_MESSAGE);
 					} catch (Exception fz) {
 					}
 					;
@@ -1202,10 +1195,10 @@ import wagemaker.co.uk.lang.LangS;
 						UIManager.put("Panel.background",  Details.ORANGE);
 						UIManager.put("OptionPane.background", Details.ORANGE);
 						
-						JOptionPane.showMessageDialog(null, "\n"
-								+ "  ALL HISTORY NOW DELETED  "
-								+ "\n" + "\n", Details.history,
-								JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(Launcher.this, "\n"
+				+ "  ALL HISTORY NOW DELETED  "
+				+ "\n" + "\n", Details.history,
+				JOptionPane.PLAIN_MESSAGE);
 					} catch (Exception fz) {
 					}
 					;
@@ -1480,36 +1473,13 @@ import wagemaker.co.uk.lang.LangS;
 			public void actionPerformed(ActionEvent event) {
 				try 
 		        {
-					LaunchBrowser.launcher("http://www.wagemaker.co.uk/?page_id=828");
+					LaunchBrowser.launcher("https://github.com/gcclinux/smalltextpad/discussions/");
 		        }           
 		        catch (Exception e) {
 	
 			}
 		}});
-	 
-		mnuItemTwitter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				try 
-		        {
-		            LaunchBrowser.launcher("http://twitter.com/gcclinux");
-		        }           
-		        catch (Exception e) {}
-	
-			}
-		});
-		
-		mnuItemPayPal.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				try 
-		        {
-					LaunchBrowser.launcher("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N7QMVEZ8VCMAY");
-		        }           
-		        catch (Exception e) {}
-	
-			}
-		});
+
 		
 		mnuItemExit.addActionListener(new ActionListener() {
 			@Override
@@ -1543,6 +1513,8 @@ import wagemaker.co.uk.lang.LangS;
 		public ExitAction() { 
 			super("Exit", new ImageIcon("/exit.png")); 
 			}
+
+            
 		public void actionPerformed(ActionEvent ev) { 
 			Position.setPosX(getParent().getX());
 			Position.setPosY(getParent().getY());
@@ -1550,5 +1522,29 @@ import wagemaker.co.uk.lang.LangS;
 			Size.setFrameWidth(getParent().getWidth());
 			System.exit(0); 
 		}
+	}
+
+	/**
+	 * Relaunch the Java application with the same classpath and main class.
+	 * This method attempts to find the java executable from java.home and
+	 * starts a new process, then exits the current JVM.
+	 */
+	private void restartApplication() {
+		try {
+			String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+			String classpath = System.getProperty("java.class.path");
+			List<String> command = new ArrayList<>();
+			command.add(javaBin);
+			command.add("-cp");
+			command.add(classpath);
+			command.add("wagemaker.co.uk.main.Launcher");
+
+			ProcessBuilder builder = new ProcessBuilder(command);
+			builder.inheritIO();
+			builder.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
 	}
 }

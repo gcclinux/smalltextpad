@@ -1,13 +1,5 @@
 package wagemaker.co.uk.utility;
 
-/******************************************************************************************************
- * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2010-2021
- * @title SmallTextPad
- * @version 1.4.5
- * @since   2010 - 2021
- * @License MIT
- ******************************************************************************************************/
-
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -19,10 +11,10 @@ public class Details {
 	public static String Developer = "Ricardo Wagemaker";
 	public static String Header = "SmallTextPad";
 
-	public static String Version = "1.4.5";
+	public static String Version = "1.5.0";
 	public static String Title = "SmallTextPad";
-	public static String versionFile = "http://bit.ly/2LyoWQl";
-	public static String remoteLicense = "http://www.wagemaker.co.uk/?page_id=74";
+	public static String versionFile = "https://github.com/gcclinux/smalltextpad/releases/latest";
+	public static String remoteLicense = "https://github.com/gcclinux/smalltextpad";
 	
 	public static String encryptionExtention = "sstp";
 	

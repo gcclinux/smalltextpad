@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="SmallTextPad:jar">
-    <output-path>$PROJECT_DIR$/classes/artifacts/SmallTextPad_jar</output-path>
-    <root id="archive" name="SmallTextPad.jar">
-      <element id="module-output" name="SmallTextPad" />
-    </root>
-  </artifact>
-</component>

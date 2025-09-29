@@ -1,148 +1,131 @@
 package wagemaker.co.uk.gui;
 
-/******************************************************************************************************
- * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2010-2020
- * @title SmallTextPad
- * @version 1.4.2
- * @since   2010 - 2020
- * @License MIT
- ******************************************************************************************************/
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Component;
+ 
 
-import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.font.TextAttribute;
-import java.awt.geom.RoundRectangle2D;
-import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+ 
 import javax.swing.UIManager;
 
-import wagemaker.co.uk.main.Launcher;
 import wagemaker.co.uk.utility.Details;
 import wagemaker.co.uk.utility.FontTheme;
-import wagemaker.co.uk.utility.LaunchBrowser;
+import wagemaker.co.uk.main.Launcher;
 
-public class About {
-	@SuppressWarnings({ "static-access", "unchecked", "rawtypes" })
-	public static void Main(String args[]) {
-		
-		UIManager UI=new UIManager();
-		UI.put("OptionPane.buttonOrientation", 0);		
-		UI.put("OptionPane.buttonFont", FontTheme.size15b);
-		UI.put("OptionPane.messageFont", FontTheme.size15i);
-		UI.put("OptionPane.messageForeground",Details.BLACK);
-		UI.put("Panel.background",  Details.ORANGE);
-		UI.put("OptionPane.background", Details.ORANGE);
-		
-		JFrame About = new JFrame();
-		About.setLayout(null);
-		About.setTitle("About");
-		About.setSize(350, 350);
-		About.setResizable(false);
-		About.setLocationRelativeTo(null); 
-		About.setUndecorated(true);
-		About.setShape(new RoundRectangle2D.Double(3,0, 300,300, 30,30));
-		About.setVisible(true);
-		
-		JLabel label = new JLabel(Details.Title, JLabel.CENTER);
-		label.setFont(FontTheme.size20b);
-		label.setForeground(Details.WHITE);
-        label.setSize(300, 30);
-        label.setLocation(0, 15);
-        
-		JLabel label2 = new JLabel(Details.Version, JLabel.CENTER);
-		label2.setFont(FontTheme.size15i);
-		label2.setForeground(Details.WHITE);
-        label2.setSize(300, 30);
-        label2.setLocation(0, 40);
-               
-		JLabel label4 = new JLabel(Details.Developer, JLabel.CENTER);
-		label4.setFont(FontTheme.size15i);
-		label4.setForeground(Details.WHITE);
-        label4.setSize(300, 30);
-        label4.setLocation(0, 60);
-        
-		JLabel label5 = new JLabel("Java", JLabel.CENTER);
-		label5.setFont(FontTheme.size20b);
-		label5.setForeground(Details.WHITE);
-        label5.setSize(300, 30);
-        label5.setLocation(0,95);
-        
-		JLabel label6 = new JLabel(System.getProperty("java.version"), JLabel.CENTER);
-		label6.setFont(FontTheme.size15i);
-		label6.setForeground(Details.WHITE);
-        label6.setSize(300, 30);
-        label6.setLocation(0,120);
-        
-		JLabel label3 = new JLabel("SmallTextPad is under", JLabel.CENTER);
-		label3.setFont(FontTheme.size15i);
-		label3.setForeground(Details.WHITE);
-        label3.setSize(300, 30);
-        label3.setLocation(0, 155);
-        
-		JLabel label7 = new JLabel("The MIT License “Agreement”", JLabel.CENTER);
-		label7.setFont(FontTheme.size15i);
-		label7.setForeground(Details.WHITE);
-        label7.setSize(300, 30);
-        label7.setLocation(0, 180);
-        
-        JLabel support = new JLabel("Website", JLabel.CENTER);
-        support.setFont(FontTheme.size17p);
-        support.setForeground(Details.WHITE);
-        support.setSize(300, 30);
-        support.setLocation(0, 220);
-        
-		JButton b=new JButton("X"); 
-		b.setFont(FontTheme.size20b);
-		b.setForeground(Details.ORANGE);
-		b.setSize(50, 30);
-		b.setLocation(125, 260);
- 
-        Font font = support.getFont();
-        Map attributes = font.getAttributes();
-        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-        support.setFont(font.deriveFont(attributes));
-	        
-	        support.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	        support.addMouseListener(new MouseAdapter() {
-	          public void mouseClicked(MouseEvent e) {
-	             if (e.getClickCount() > 0) {
-	            	 
-	        		  LaunchBrowser.launcher(Details.remoteLicense);
-	        		  
-	             }
-	          }
-	       });
-	        
-        b.addActionListener(new ActionListener(){  
-        	public void actionPerformed(ActionEvent e){  
-        		About.dispose();
-    	        }  
-    	    });  
+/**
+ * Modernized About dialog for SmallTextPad.
+ * Uses layout managers, pack(), and a rectangular window.
+ */
+public final class About {
 
-		About.add(label);
-		About.add(label2);
-		About.add(label4);
-		About.add(label5);
-		About.add(label6);
-		About.add(label3);
-		About.add(label7);
-		About.add(support);
-		About.add(b);
+	private About() { /* utility class */ }
 
-		// Adding Application ICON
-		 
-		 ImageIcon ImageIcon = new ImageIcon(Launcher.class.getResource("/gcclinux.png"));
-		 Image Logo = ImageIcon.getImage();
-		 About.setIconImage(Logo);
- 
+	public static void Main(String[] args) {
+		// Small, modern UI defaults
+		UIManager.put("Panel.background", Details.ORANGE);
+		UIManager.put("Label.font", FontTheme.size15i);
+
+		JDialog dlg = new JDialog();
+		dlg.setTitle("About " + Details.Title);
+		dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dlg.setResizable(false);
+
+		JPanel content = new JPanel();
+		content.setLayout(new BorderLayout(12, 12));
+		content.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+
+	// Top: icon + title (centered)
+	JPanel top = new JPanel();
+	top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
+	top.setOpaque(false);
+	ImageIcon icon = new ImageIcon(Launcher.class.getResource("/gcclinux.png"));
+	JLabel iconLabel = new JLabel(icon);
+	iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	top.add(iconLabel);
+
+	JLabel title = new JLabel(Details.Title, JLabel.CENTER);
+	title.setFont(FontTheme.size20b);
+	title.setForeground(Details.WHITE);
+	title.setAlignmentX(Component.CENTER_ALIGNMENT);
+	top.add(title);
+
+	JLabel version = new JLabel("Version: " + Details.Version, JLabel.CENTER);
+	version.setFont(FontTheme.size15i);
+	version.setForeground(Details.WHITE);
+	version.setAlignmentX(Component.CENTER_ALIGNMENT);
+	top.add(version);
+
+	content.add(top, BorderLayout.NORTH);
+
+		// Center: info
+		JPanel center = new JPanel();
+		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
+		center.setOpaque(false);
+		center.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+
+		JLabel dev = new JLabel("Developer: " + Details.Developer, JLabel.CENTER);
+		dev.setFont(FontTheme.size15i);
+		dev.setForeground(Details.WHITE);
+		dev.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		center.add(dev);
+
+		center.add(Box.createRigidArea(new Dimension(1, 6)));
+
+		JLabel javaLabel = new JLabel("Java: " + System.getProperty("java.version"), JLabel.CENTER);
+		javaLabel.setFont(FontTheme.size15i);
+		javaLabel.setForeground(Details.WHITE);
+		javaLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		center.add(javaLabel);
+
+		center.add(Box.createRigidArea(new Dimension(1, 8)));
+
+	// Description paragraph (HTML-wrapped for automatic wrapping)
+	String desc = "<html><body style='width:420px; text-align:center;'><br>" +
+		"SmallTextPad is a simple, lightweight Java text editor and is 100% free. " +
+		"It requires a minimum of JRE 21 on your system unless you run it inside a container (snap/flatpak/other). " +
+		"In addition to standard editing features, SmallTextPad supports encrypting and decrypting secure text files, " +
+		"so you can safely store sensitive information alongside regular notes. " +
+		"The project includes many useful features and continues to be developed in spare time.<br>" +
+		"</body></html>";
+	JLabel description = new JLabel(desc);
+	description.setFont(FontTheme.size15i);
+	description.setForeground(Details.WHITE);
+	description.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+	center.add(description);
+
+	center.add(Box.createRigidArea(new Dimension(1, 8)));
+
+		JLabel licensed = new JLabel("Distributed under the MIT License", JLabel.CENTER);
+		licensed.setFont(FontTheme.size15i);
+		licensed.setForeground(Details.WHITE);
+		licensed.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		center.add(licensed);
+
+		content.add(center, BorderLayout.CENTER);
+
+		// Bottom: close button
+		JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 6));
+		bottom.setOpaque(false);
+		JButton close = new JButton("Close");
+		close.setFont(FontTheme.size15b);
+		close.addActionListener(ev -> dlg.dispose());
+		bottom.add(close);
+		content.add(bottom, BorderLayout.SOUTH);
+
+		dlg.setContentPane(content);
+	dlg.pack();
+	dlg.setSize(Math.max(dlg.getWidth(), 480), dlg.getHeight());
+		dlg.setLocationRelativeTo(null);
+		dlg.setVisible(true);
 	}
-	
+
 }

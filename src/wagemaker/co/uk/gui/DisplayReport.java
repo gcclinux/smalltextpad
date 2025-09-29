@@ -1,12 +1,5 @@
 package wagemaker.co.uk.gui;
 
-/******************************************************************************************************
- * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2010-2018
- * @title SmallTextPad
- * @version 1.3.2
- * @since   2013 - 2018
- ******************************************************************************************************/
-
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Image;
@@ -63,7 +56,7 @@ public class DisplayReport
 		
 
     	try {
-    		URL url = new URL( "file:///"+filename);
+    		URL url = new File(filename.toString()).toURI().toURL();
 		    html = new JEditorPane( url );
 		    //html.setPreferredSize(new Dimension(800, 600));
 		    html.setEditable( false );

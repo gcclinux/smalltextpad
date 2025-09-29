@@ -1,13 +1,5 @@
 package wagemaker.co.uk.utility;
 
-/******************************************************************************************************
- * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2010-2018
- * @title SmallTextPad
- * @version 1.3.2
- * @since   2010 - 2018
- * @License MIT
- ******************************************************************************************************/
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

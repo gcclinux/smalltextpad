@@ -1,12 +1,5 @@
 package wagemaker.co.uk.gui;
 
-/******************************************************************************************************
- * @author by Ricardo Wagemaker (["java"] + "@" + "wagemaker.co.uk") 2010-2018
- * @title SmallTextPad
- * @version 1.2.4
- * @since   2013 - 2018
- ******************************************************************************************************/
-
 import java.awt.Container;
 import java.awt.Cursor;
 import java.io.IOException;
