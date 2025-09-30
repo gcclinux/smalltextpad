@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.HashSet;
 import java.util.Set;
 import java.awt.event.MouseAdapter;
@@ -35,11 +37,14 @@ import wagemaker.co.uk.utility.STPFileCrypter;
 import wagemaker.co.uk.utility.logHistory;
 
 import wagemaker.co.uk.utility.Details;
+import wagemaker.co.uk.lang.LangS;
 import wagemaker.co.uk.main.Launcher;
 
 public class HistoryViewer extends JDialog {
 
     private static final long serialVersionUID = 1L;
+    Locale locale = Locale.of(LangS.getLanguage());
+    ResourceBundle labels = ResourceBundle.getBundle("wagemaker.co.uk.lang.LabelsBundle", locale);
 
     public static class Entry {
         public final String timestamp;
@@ -99,7 +104,7 @@ public class HistoryViewer extends JDialog {
         add(sp, BorderLayout.CENTER);
 
         JPanel bottom = new JPanel();
-        JButton openBtn = new JButton("Open Selected");
+        JButton openBtn = new JButton(labels.getString("label009"));
         openBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,7 +129,7 @@ public class HistoryViewer extends JDialog {
         });
         bottom.add(openBtn);
 
-        JButton closeBtn = new JButton("Close");
+        JButton closeBtn = new JButton(labels.getString("label037"));
         closeBtn.addActionListener(new ActionListener() { public void actionPerformed(ActionEvent e) { HistoryViewer.this.dispose(); } });
         bottom.add(closeBtn);
 
