@@ -1,11 +1,19 @@
 name: smalltextpad
 base: core22
 version: '1.5.0'
+title: SmallTextPad
 summary: SmallTextPad - Simple Java Text Editor with Encryption
 description: |
   SmallTextPad is a lightweight Java text editor with optional file encryption 
   and multi-language support. Features include basic editing, undo/redo, 
   printing, and encrypted file format (.sstp).
+
+website: https://github.com/gcclinux/smalltextpad
+source-code: https://github.com/gcclinux/smalltextpad
+issues: https://github.com/gcclinux/smalltextpad/issues
+contact: https://github.com/gcclinux/smalltextpad/discussions
+license: MIT
+donation: https://github.com/sponsors/gcclinux
 
 grade: stable
 confinement: strict
@@ -31,26 +39,24 @@ parts:
   smalltextpad:
     plugin: dump
     source: .
-    build-packages:
-      - openjdk-21-jdk
+    build-packages: []
     stage-packages:
       - openjdk-21-jre
+    build-attributes:
+      - no-patchelf
     override-build: |
-      # Compile the Java application
-      javac -d bin -Xlint:deprecation @sources.txt
-      
       # Create wrapper script
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       cat > $SNAPCRAFT_PART_INSTALL/bin/smalltextpad << 'EOF'
       #!/bin/bash
-      export JAVA_HOME=$SNAP/usr/lib/jvm/java-21-openjdk-amd64
+      export JAVA_HOME=$(find $SNAP/usr/lib/jvm -name "java-*-openjdk-*" -type d | head -1)
       export DISPLAY=${DISPLAY:-:0}
-      exec $JAVA_HOME/bin/java -cp $SNAP/bin wagemaker.co.uk.main.Launcher "$@"
+      exec $JAVA_HOME/bin/java -jar $SNAP/SmallTextPad.jar "$@"
       EOF
       chmod +x $SNAPCRAFT_PART_INSTALL/bin/smalltextpad
       
-      # Copy compiled classes and resources
-      cp -r bin/* $SNAPCRAFT_PART_INSTALL/bin/
+      # Copy pre-compiled JAR and resources
+      cp classes/artifacts/SmallTextPad.jar $SNAPCRAFT_PART_INSTALL/
       cp -r res $SNAPCRAFT_PART_INSTALL/
       cp -r dic $SNAPCRAFT_PART_INSTALL/
       

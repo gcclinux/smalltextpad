@@ -2,7 +2,7 @@
 Name=SmallTextPad
 Comment=Simple Java Text Editor with Encryption
 Exec=smalltextpad %F
-Icon=smalltextpad
+Icon=${SNAP}/usr/share/pixmaps/smalltextpad.png
 Terminal=false
 Type=Application
 Categories=Office;TextEditor;

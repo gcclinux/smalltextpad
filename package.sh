@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Quick test-run helper for SmallTextPad
+# On RaspberryPI5 you may need to install snapd first and use it without lxd
+# $ snapcraft pack --destructive-mode
 # Exits on any error
 set -euo pipefail
 
@@ -20,5 +22,12 @@ find src/ -name "*.java" > sources.txt
 echo "[run] Compiling Java sources to bin/"
 javac -d bin @sources.txt
 
-echo "[run] Launching SmallTextPad (this will run until you close the GUI)"
-java -cp bin wagemaker.co.uk.main.Launcher
+echo "[run] Now creating SmallTextPad.jar in the current directory"
+jar cfm classes/artifacts/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin . -C . res -C . dic
+
+echo "[run] Now creating smalltextpad_<version>_amd64.snap in the current directory"
+snapcraft pack --output=classes/artifacts/smalltextpad_$(grep '^version:' snap/snapcraft.yaml | awk '{print $2}' | tr -d "'")_amd64.snap
+
+
+
+
