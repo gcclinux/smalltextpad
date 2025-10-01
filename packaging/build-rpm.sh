@@ -84,14 +84,21 @@ echo "Building RPM package..."
 cd ~/rpmbuild/SPECS
 rpmbuild -ba "$SPEC_FILE"
 
+# Copy RPM packages to classes/artifacts
+echo "Copying RPM packages to classes/artifacts..."
+cd "$PROJECT_ROOT"
+mkdir -p classes/artifacts
+cp ~/rpmbuild/RPMS/noarch/$PACKAGE_NAME-$VERSION-1.*.noarch.rpm classes/artifacts/
+cp ~/rpmbuild/SRPMS/$PACKAGE_NAME-$VERSION-1.*.src.rpm classes/artifacts/
+
 echo ""
 echo "Build completed successfully!"
 echo "RPM packages are available in:"
-echo "  Binary RPM: ~/rpmbuild/RPMS/noarch/$PACKAGE_NAME-$VERSION-1.*.noarch.rpm"
-echo "  Source RPM: ~/rpmbuild/SRPMS/$PACKAGE_NAME-$VERSION-1.*.src.rpm"
+echo "  Binary RPM: classes/artifacts/$PACKAGE_NAME-$VERSION-1.*.noarch.rpm"
+echo "  Source RPM: classes/artifacts/$PACKAGE_NAME-$VERSION-1.*.src.rpm"
 echo ""
 echo "To install the package:"
-echo "  sudo rpm -ivh ~/rpmbuild/RPMS/noarch/$PACKAGE_NAME-$VERSION-1.*.noarch.rpm"
+echo "  sudo rpm -ivh classes/artifacts/$PACKAGE_NAME-$VERSION-1.*.noarch.rpm"
 echo ""
 echo "Or on Fedora/RHEL systems:"
-echo "  sudo dnf install ~/rpmbuild/RPMS/noarch/$PACKAGE_NAME-$VERSION-1.*.noarch.rpm"
+echo "  sudo dnf install classes/artifacts/$PACKAGE_NAME-$VERSION-1.*.noarch.rpm"
