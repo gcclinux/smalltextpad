@@ -20,5 +20,15 @@ find src/ -name "*.java" > sources.txt
 echo "[run] Compiling Java sources to bin/"
 javac -d bin @sources.txt
 
+echo "[run] Copying resource files to bin/"
+# Ensure language properties are available in the classpath
+mkdir -p bin/wagemaker/co/uk/lang
+cp src/wagemaker/co/uk/lang/*.properties bin/wagemaker/co/uk/lang/
+
+# Copy image resources into bin root so getResource("/name.png") works
+if [ -d "res" ]; then
+    cp -r res/* bin/
+fi
+
 echo "[run] Launching SmallTextPad (this will run until you close the GUI)"
 java -cp bin wagemaker.co.uk.main.Launcher
