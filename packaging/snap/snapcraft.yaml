@@ -1,0 +1,69 @@
+name: smalltextpad
+base: core22
+version: '1.5.0'
+title: SmallTextPad
+summary: SmallTextPad - Simple Java Text Editor with Encryption
+description: |
+  SmallTextPad is a lightweight Java text editor with optional file encryption 
+  and multi-language support. Features include basic editing, undo/redo, 
+  printing, and encrypted file format (.sstp).
+
+website: https://github.com/gcclinux/smalltextpad
+source-code: https://github.com/gcclinux/smalltextpad
+issues: https://github.com/gcclinux/smalltextpad/issues
+contact: https://github.com/gcclinux/smalltextpad/discussions
+license: MIT
+donation: https://github.com/sponsors/gcclinux
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+
+apps:
+  smalltextpad:
+    command: bin/smalltextpad
+    desktop: usr/share/applications/smalltextpad.desktop
+    plugs:
+      - home
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - unity7
+      - opengl
+      - removable-media
+
+parts:
+  smalltextpad:
+    plugin: dump
+    source: .
+    build-packages: []
+    stage-packages:
+      - openjdk-21-jre
+    build-attributes:
+      - no-patchelf
+    override-build: |
+      # Create wrapper script
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cat > $SNAPCRAFT_PART_INSTALL/bin/smalltextpad << 'EOF'
+      #!/bin/bash
+      export JAVA_HOME=$(find $SNAP/usr/lib/jvm -name "java-*-openjdk-*" -type d | head -1)
+      export DISPLAY=${DISPLAY:-:0}
+      exec $JAVA_HOME/bin/java -jar $SNAP/SmallTextPad.jar "$@"
+      EOF
+      chmod +x $SNAPCRAFT_PART_INSTALL/bin/smalltextpad
+      
+      # Copy pre-compiled JAR and resources
+      cp classes/artifacts/SmallTextPad.jar $SNAPCRAFT_PART_INSTALL/
+      cp -r res $SNAPCRAFT_PART_INSTALL/
+      cp -r dic $SNAPCRAFT_PART_INSTALL/
+      
+      # Install desktop file
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/applications
+      cp snap/gui/smalltextpad.desktop $SNAPCRAFT_PART_INSTALL/usr/share/applications/
+      
+      # Install icon
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/pixmaps
+      cp res/smalltextpad_128x128.png $SNAPCRAFT_PART_INSTALL/usr/share/pixmaps/smalltextpad.png

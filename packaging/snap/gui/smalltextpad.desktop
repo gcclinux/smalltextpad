@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=SmallTextPad
+Comment=Simple Java Text Editor with Encryption
+Exec=smalltextpad %F
+Icon=${SNAP}/usr/share/pixmaps/smalltextpad.png
+Terminal=false
+Type=Application
+Categories=Office;TextEditor;
+MimeType=text/plain;text/x-java;text/x-c;text/x-c++;text/x-python;text/x-sh;application/x-smalltextpad-encrypted;
+StartupNotify=true
+StartupWMClass=SmallTextPad
