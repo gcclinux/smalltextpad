@@ -1,0 +1,49 @@
+name: Build Windows installer
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-installer:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Install WiX Toolset (Chocolatey)
+        shell: pwsh
+        run: |
+          choco install wixtoolset -y
+
+      - name: Allow PowerShell scripts
+        shell: pwsh
+        run: Set-ExecutionPolicy Bypass -Scope Process -Force
+
+      - name: Run packaging script (creates installer or app-image)
+        shell: pwsh
+        run: |
+          # Run jpackage script that builds jar and creates installer (requires WiX for exe)
+          .\packaging\jpackage.ps1
+
+      - name: Show produced files
+        shell: pwsh
+        run: |
+          Write-Host 'dist contents:'
+          Get-ChildItem -Recurse -Force dist || true
+
+      - name: Upload installer artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smalltextpad-windows-installers
+          path: |
+            dist/installer/**
+            dist/*-windows-appimage.zip
