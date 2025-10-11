@@ -55,6 +55,7 @@ java -cp bin wagemaker.co.uk.main.Launcher
 
 ## Links
 
+- Home: https://gcclinux.github.io/smalltextpad/
 - Project: https://github.com/gcclinux/smalltextpad
 - Latest releases: https://github.com/gcclinux/smalltextpad/releases/latest
 

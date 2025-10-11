@@ -28,8 +28,8 @@ jar cfm classes/artifacts/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin . -C 
 echo "[run] Now testing newly created SmallTextPad.jar"
 java -jar classes/artifacts/SmallTextPad.jar
 
-# echo "[run] Now creating smalltextpad_<version>_amd64.snap in the current directory"
-# snapcraft pack --output=classes/artifacts/smalltextpad_$(grep '^version:' snap/snapcraft.yaml | awk '{print $2}' | tr -d "'")_amd64.snap
+echo "[run] Now creating smalltextpad_<version>_amd64.snap in the current directory"
+snapcraft pack --output=classes/artifacts/smalltextpad_$(grep '^version:' snap/snapcraft.yaml | awk '{print $2}' | tr -d "'")_amd64.snap
 
 
 
