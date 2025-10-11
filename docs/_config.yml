@@ -1,6 +1,24 @@
 title: SmallTextPad
 description: A lightweight Java text editor with encryption and multi-language support
 theme: jekyll-theme-cayman
-show_downloads: true
+show_downloads: false
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO
+author: Ricardo Wagemaker
+url: https://gcclinux.github.io/smalltextpad/
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Download
+    url: /#download
+  - title: Documentation
+    url: /docs
+  - title: GitHub
 github:
   repository_url: https://github.com/gcclinux/smalltextpad
