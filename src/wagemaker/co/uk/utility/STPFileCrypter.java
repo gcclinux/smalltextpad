@@ -71,7 +71,12 @@ static boolean fileProcessor(int cipherMode,String key,File inputFile,File outpu
 				File decryptedFile = null;
 				
 				if (filePathTrue.indexOf(".") > 0) {
-					decryptedFile = new File(filePathTrue.substring(0, filePathTrue.lastIndexOf(".")));
+					String decryptedPath = filePathTrue.substring(0, filePathTrue.lastIndexOf("."));
+					// If the decrypted file has no extension, add .txt
+					if (decryptedPath.lastIndexOf(".") == -1 || decryptedPath.lastIndexOf(".") < decryptedPath.lastIndexOf(File.separator)) {
+						decryptedPath = decryptedPath + ".txt";
+					}
+					decryptedFile = new File(decryptedPath);
 				}	
 
 			     if (STPFileCrypter.fileProcessor(Cipher.DECRYPT_MODE,key,inputFile,decryptedFile) == true) {
