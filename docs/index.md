@@ -59,9 +59,9 @@ java -jar SmallTextPad.jar
 
 ## Screenshots
 
-![Language Selector](https://github.com/gcclinux/smalltextpad/edit/main/screenshots/languages.png)
-![Encrypted File](https://github.com/gcclinux/smalltextpad/edit/main/screenshots/encrypted.png)
-![History Picker](https://github.com/gcclinux/smalltextpad/edit/main/screenshotshistory-picker.png)
+![Language Selector](https://github.com/gcclinux/smalltextpad/blob/main/screenshots/languages.png?raw=true)
+![Encrypted File](https://github.com/gcclinux/smalltextpad/blob/main/screenshots/encrypted.png?raw=true)
+![History Picker](https://github.com/gcclinux/smalltextpad/blob/main/screenshotshistory-picker.png?raw=true)
 
 ## Support
 
