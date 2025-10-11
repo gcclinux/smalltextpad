@@ -54,14 +54,15 @@ java -jar SmallTextPad.jar
 
 ## Screenshots
 
-![Language Selector](../screenshots/languages.png)
-![Encrypted File](../screenshots/encrypted.png)
-![History Picker](../screenshots/history-picker.png)
+![Language Selector](https://github.com/gcclinux/smalltextpad/edit/main/screenshots/languages.png)
+![Encrypted File](https://github.com/gcclinux/smalltextpad/edit/main/screenshots/encrypted.png)
+![History Picker](https://github.com/gcclinux/smalltextpad/edit/main/screenshotshistory-picker.png)
 
 ## Support
 
 [![Discussions](https://img.shields.io/badge/💬_Join_Discussions-GitHub-blue?style=for-the-badge)](https://github.com/gcclinux/smalltextpad/discussions) 
-[![Issues](https://img.shields.io/badge/🐛_Report_Issues-GitHub-red?style=for-the-badge)](https://github.com/gcclinux/smalltextpad/issues) 
+[![Issues](https://img.shields.io/badge/🐛_Report_Issues-GitHub-red?style=for-the-badge)](https://github.com/gcclinux/smalltextpad/issues)   
+
 [![Sponsor](https://img.shields.io/badge/💖_Sponsor-GitHub-pink?style=for-the-badge)](https://github.com/sponsors/gcclinux) 
 [![Buy Me A Coffee](https://img.shields.io/badge/☕_Buy_Me_A_Coffee-Support-yellow?style=for-the-badge)](https://www.buymeacoffee.com/gcclinux) 
 
