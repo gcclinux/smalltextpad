@@ -1,6 +1,13 @@
+---
+layout: default
+title: RPM Build Guide - SmallTextPad
+---
+
+[← Back to Home](index.html)
+
 # RPM Packaging for SmallTextPad
 
-This directory contains the RPM packaging files for SmallTextPad, a lightweight Java text editor with encryption and multi-language support.
+This guide covers building RPM packages for SmallTextPad, a lightweight Java text editor with encryption and multi-language support.
 
 ## Files
 
@@ -161,3 +168,10 @@ To contribute improvements to the RPM packaging:
 - **Project Repository:** https://github.com/gcclinux/smalltextpad
 - **Issues:** https://github.com/gcclinux/smalltextpad/issues
 - **Latest Releases:** https://github.com/gcclinux/smalltextpad/releases/latest
+
+## See Also
+
+- [JAR Build Guide](README-jar.html) - Building standalone JAR files
+- [Snap Build Guide](README-snap.html) - Building Snap packages for universal Linux distribution
+- [Windows Build Guide](README-windows.html) - Building Windows installers and portable packages
+- [Back to Home](index.html) - Main documentation and downloads

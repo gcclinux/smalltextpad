@@ -11,14 +11,5 @@ plugins:
 author: Ricardo Wagemaker
 url: https://gcclinux.github.io/smalltextpad/
 
-# Navigation
-navigation:
-  - title: Home
-    url: /
-  - title: Download
-    url: /#download
-  - title: Documentation
-    url: /docs
-  - title: GitHub
 github:
   repository_url: https://github.com/gcclinux/smalltextpad

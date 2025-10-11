@@ -25,9 +25,6 @@ javac -d bin @sources.txt
 echo "[run] Now creating SmallTextPad.jar in the current directory"
 jar cfm classes/artifacts/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin . -C . res -C . dic
 
-echo "[run] Now testing newly created SmallTextPad.jar"
-java -jar classes/artifacts/SmallTextPad.jar
-
 echo "[run] Now creating smalltextpad_<version>_amd64.snap in the current directory"
 snapcraft pack --output=classes/artifacts/smalltextpad_$(grep '^version:' snap/snapcraft.yaml | awk '{print $2}' | tr -d "'")_amd64.snap
 

@@ -1,10 +1,10 @@
 Name:           smalltextpad
 Version:        1.5.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A lightweight Java text editor with encryption and multi-language support
 
 License:        Custom
-URL:            https://github.com/gcclinux/smalltextpad
+URL:            https://gcclinux.github.io/smalltextpad/
 Source0:        %{name}-%{version}.tar.gz
 
 BuildArch:      noarch
@@ -35,9 +35,19 @@ find src/ -name "*.java" > sources.txt
 mkdir -p bin
 javac -d bin -Xlint:deprecation @sources.txt
 
-# Create JAR file
+# Copy resource bundles (properties files) to bin
+mkdir -p bin/wagemaker/co/uk/lang
+cp src/wagemaker/co/uk/lang/*.properties bin/wagemaker/co/uk/lang/
+
+# Copy image resources into bin root so getResource("/name.png") works
+cp -r res/* bin/
+
+# Copy dictionaries to bin root
+cp -r dic bin/
+
+# Create JAR file with all resources included
 mkdir -p classes/artifacts
-jar cfm classes/artifacts/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin . -C . res -C . dic
+jar cfm classes/artifacts/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin .
 
 %install
 # Create directory structure

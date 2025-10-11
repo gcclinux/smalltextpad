@@ -57,6 +57,26 @@ sudo rpm -ivh smalltextpad-1.5.0-1.noarch.rpm
 java -jar SmallTextPad.jar
 ```
 
+## Build Documentation
+
+Want to build SmallTextPad from source or create packages for distribution? Check out our comprehensive build guides:
+
+### 📦 Package Build Guides
+
+| Format | Platform | Documentation |
+|--------|----------|---------------|
+| **JAR** | All Platforms | [📄 JAR Build Guide](README-jar.html) |
+| **Snap** | Linux Universal | [📄 Snap Build Guide](README-snap.html) |
+| **RPM** | Fedora/RHEL/openSUSE | [📄 RPM Build Guide](README-rpm.html) |
+| **Windows** | Windows | [📄 Windows Build Guide](README-windows.html) |
+
+Each guide includes:
+- Prerequisites and dependencies
+- Step-by-step build instructions
+- Installation and testing procedures
+- Troubleshooting tips
+- Distribution information
+
 ## Screenshots
 
 ![Language Selector](https://github.com/gcclinux/smalltextpad/blob/main/screenshots/languages.png?raw=true)

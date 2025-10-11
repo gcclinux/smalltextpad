@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>RPM Build Guide - SmallTextPad | SmallTextPad</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="RPM Build Guide - SmallTextPad" />
+<meta name="author" content="Ricardo Wagemaker" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A lightweight Java text editor with encryption and multi-language support" />
+<meta property="og:description" content="A lightweight Java text editor with encryption and multi-language support" />
+<link rel="canonical" href="http://localhost:4000/README-rpm.html" />
+<meta property="og:url" content="http://localhost:4000/README-rpm.html" />
+<meta property="og:site_name" content="SmallTextPad" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="RPM Build Guide - SmallTextPad" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ricardo Wagemaker"},"description":"A lightweight Java text editor with encryption and multi-language support","headline":"RPM Build Guide - SmallTextPad","url":"http://localhost:4000/README-rpm.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">RPM Build Guide - SmallTextPad</h1>
+      <h2 class="project-tagline">A lightweight Java text editor with encryption and multi-language support</h2>
+      
+      
+        <a href="" class="btn">Download .zip</a>
+        <a href="" class="btn">Download .tar.gz</a>
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="index.html">← Back to Home</a></p>
+
+<h1 id="rpm-packaging-for-smalltextpad">RPM Packaging for SmallTextPad</h1>
+
+<p>This guide covers building RPM packages for SmallTextPad, a lightweight Java text editor with encryption and multi-language support.</p>
+
+<h2 id="files">Files</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">smalltextpad.spec</code> - RPM spec file with complete package definition</li>
+  <li><code class="language-plaintext highlighter-rouge">build-rpm.sh</code> - Helper script to build the RPM package</li>
+  <li><code class="language-plaintext highlighter-rouge">README-rpm.md</code> - This documentation file</li>
+</ul>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<h3 id="system-requirements">System Requirements</h3>
+<ul>
+  <li>Linux distribution with RPM package management (Fedora, RHEL, CentOS, openSUSE, etc.)</li>
+  <li>Java 21+ JDK installed</li>
+  <li>RPM build tools</li>
+</ul>
+
+<h3 id="installing-build-dependencies">Installing Build Dependencies</h3>
+
+<p><strong>Fedora/RHEL/CentOS:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>dnf <span class="nb">install </span>rpm-build rpmdevtools java-21-openjdk-devel
+</code></pre></div></div>
+
+<p><strong>openSUSE:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>zypper <span class="nb">install </span>rpm-build java-21-openjdk-devel
+</code></pre></div></div>
+
+<h2 id="building-the-rpm-package">Building the RPM Package</h2>
+
+<ol>
+  <li>Navigate to the packaging directory:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>packaging
+</code></pre></div>    </div>
+  </li>
+  <li>Run the build script:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./build-rpm.sh
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>The script will:</p>
+<ul>
+  <li>Set up the RPM build environment</li>
+  <li>Create a source tarball</li>
+  <li>Build both binary and source RPM packages</li>
+</ul>
+
+<h2 id="package-details">Package Details</h2>
+
+<h3 id="package-information">Package Information</h3>
+<ul>
+  <li><strong>Name:</strong> smalltextpad</li>
+  <li><strong>Version:</strong> 1.5.0</li>
+  <li><strong>Architecture:</strong> noarch (Java application)</li>
+  <li><strong>License:</strong> Custom (see LICENSE file)</li>
+  <li><strong>URL:</strong> https://github.com/gcclinux/smalltextpad</li>
+  <li><strong>Maintainer:</strong> Ricardo Wagemaker</li>
+</ul>
+
+<h3 id="installation-locations">Installation Locations</h3>
+<ul>
+  <li><strong>Executable:</strong> <code class="language-plaintext highlighter-rouge">/usr/bin/smalltextpad</code></li>
+  <li><strong>JAR file:</strong> <code class="language-plaintext highlighter-rouge">/usr/share/smalltextpad/SmallTextPad.jar</code></li>
+  <li><strong>Resources:</strong> <code class="language-plaintext highlighter-rouge">/usr/share/smalltextpad/res/</code></li>
+  <li><strong>Dictionaries:</strong> <code class="language-plaintext highlighter-rouge">/usr/share/smalltextpad/dic/</code></li>
+  <li><strong>Desktop file:</strong> <code class="language-plaintext highlighter-rouge">/usr/share/applications/smalltextpad.desktop</code></li>
+  <li><strong>Icons:</strong> <code class="language-plaintext highlighter-rouge">/usr/share/icons/hicolor/{128x128,256x256,1024x1024}/apps/smalltextpad.png</code></li>
+  <li><strong>Documentation:</strong> <code class="language-plaintext highlighter-rouge">/usr/share/doc/smalltextpad/</code></li>
+</ul>
+
+<h3 id="features-included">Features Included</h3>
+<ul>
+  <li>Desktop integration with application menu entry</li>
+  <li>File associations for text files and .sstp encrypted files</li>
+  <li>Multiple icon sizes for different display densities</li>
+  <li>Proper MIME type handling</li>
+  <li>Multi-language desktop entry descriptions</li>
+  <li>Automatic icon cache and desktop database updates</li>
+</ul>
+
+<h2 id="installing-the-package">Installing the Package</h2>
+
+<p>After building, install the package with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using rpm directly</span>
+<span class="nb">sudo </span>rpm <span class="nt">-ivh</span> ~/rpmbuild/RPMS/noarch/smalltextpad-1.5.0-1.<span class="k">*</span>.noarch.rpm
+
+<span class="c"># Or using dnf (Fedora/RHEL)</span>
+<span class="nb">sudo </span>dnf <span class="nb">install</span> ~/rpmbuild/RPMS/noarch/smalltextpad-1.5.0-1.<span class="k">*</span>.noarch.rpm
+
+<span class="c"># Or using zypper (openSUSE)</span>
+<span class="nb">sudo </span>zypper <span class="nb">install</span> ~/rpmbuild/RPMS/noarch/smalltextpad-1.5.0-1.<span class="k">*</span>.noarch.rpm
+</code></pre></div></div>
+
+<h2 id="using-the-application">Using the Application</h2>
+
+<p>Once installed, you can:</p>
+
+<ol>
+  <li><strong>Launch from application menu:</strong> Look for “SmallTextPad” in the Office or Development category</li>
+  <li><strong>Launch from command line:</strong> <code class="language-plaintext highlighter-rouge">smalltextpad [filename]</code></li>
+  <li><strong>Open files:</strong> Right-click text files and choose “Open with SmallTextPad”</li>
+</ol>
+
+<h2 id="uninstalling">Uninstalling</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>rpm <span class="nt">-e</span> smalltextpad
+<span class="c"># or</span>
+<span class="nb">sudo </span>dnf remove smalltextpad
+<span class="c"># or</span>
+<span class="nb">sudo </span>zypper remove smalltextpad
+</code></pre></div></div>
+
+<h2 id="customization">Customization</h2>
+
+<h3 id="modifying-the-spec-file">Modifying the Spec File</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">smalltextpad.spec</code> file can be customized for different requirements:</p>
+
+<ul>
+  <li><strong>Dependencies:</strong> Modify the <code class="language-plaintext highlighter-rouge">Requires:</code> lines to change Java version requirements</li>
+  <li><strong>File locations:</strong> Change installation paths in the <code class="language-plaintext highlighter-rouge">%install</code> section</li>
+  <li><strong>Desktop integration:</strong> Modify the desktop file creation in the <code class="language-plaintext highlighter-rouge">%install</code> section</li>
+  <li><strong>Package metadata:</strong> Update summary, description, and other metadata</li>
+</ul>
+
+<h3 id="building-for-different-architectures">Building for Different Architectures</h3>
+
+<p>While SmallTextPad is a Java application (noarch), you can modify the spec file to build architecture-specific packages if needed by changing:</p>
+<pre><code class="language-spec">BuildArch: noarch
+</code></pre>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="common-issues">Common Issues</h3>
+
+<ol>
+  <li><strong>Java not found during build:</strong>
+    <ul>
+      <li>Ensure Java 21+ JDK is installed</li>
+      <li>Check that <code class="language-plaintext highlighter-rouge">java</code> and <code class="language-plaintext highlighter-rouge">javac</code> are in your PATH</li>
+    </ul>
+  </li>
+  <li><strong>RPM build tools missing:</strong>
+    <ul>
+      <li>Install <code class="language-plaintext highlighter-rouge">rpm-build</code> and <code class="language-plaintext highlighter-rouge">rpmdevtools</code> packages</li>
+    </ul>
+  </li>
+  <li><strong>Permission errors:</strong>
+    <ul>
+      <li>Ensure you have write permissions to <code class="language-plaintext highlighter-rouge">~/rpmbuild/</code></li>
+      <li>The build script will create the directory structure if needed</li>
+    </ul>
+  </li>
+  <li><strong>Missing MANIFEST.MF:</strong>
+    <ul>
+      <li>The build script automatically creates this file if missing</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="build-logs">Build Logs</h3>
+
+<p>Check RPM build logs for detailed error information:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tail</span> <span class="nt">-f</span> ~/rpmbuild/BUILD/smalltextpad-<span class="k">*</span>/build.log
+</code></pre></div></div>
+
+<h2 id="contributing">Contributing</h2>
+
+<p>To contribute improvements to the RPM packaging:</p>
+
+<ol>
+  <li>Fork the repository</li>
+  <li>Make changes to the spec file or build scripts</li>
+  <li>Test the build process</li>
+  <li>Submit a pull request</li>
+</ol>
+
+<h2 id="support">Support</h2>
+
+<ul>
+  <li><strong>Project Repository:</strong> https://github.com/gcclinux/smalltextpad</li>
+  <li><strong>Issues:</strong> https://github.com/gcclinux/smalltextpad/issues</li>
+  <li><strong>Latest Releases:</strong> https://github.com/gcclinux/smalltextpad/releases/latest</li>
+</ul>
+
+<h2 id="see-also">See Also</h2>
+
+<ul>
+  <li><a href="README-jar.html">JAR Build Guide</a> - Building standalone JAR files</li>
+  <li><a href="README-snap.html">Snap Build Guide</a> - Building Snap packages for universal Linux distribution</li>
+  <li><a href="README-windows.html">Windows Build Guide</a> - Building Windows installers and portable packages</li>
+  <li><a href="index.html">Back to Home</a> - Main documentation and downloads</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>

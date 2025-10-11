@@ -69,3 +69,6 @@ Thumbs.db
 # If you want to preserve certain jars or packages, whitelist them explicitly.
 # Example: to keep packages/SmallTextPad_1.4.5.jar unignored, add:
 # !/packages/SmallTextPad_1.4.5.jar
+
+Gemfile
+Gemfile.lock

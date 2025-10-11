@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>JAR Build Guide - SmallTextPad | SmallTextPad</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="JAR Build Guide - SmallTextPad" />
+<meta name="author" content="Ricardo Wagemaker" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A lightweight Java text editor with encryption and multi-language support" />
+<meta property="og:description" content="A lightweight Java text editor with encryption and multi-language support" />
+<link rel="canonical" href="http://localhost:4000/README-jar.html" />
+<meta property="og:url" content="http://localhost:4000/README-jar.html" />
+<meta property="og:site_name" content="SmallTextPad" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="JAR Build Guide - SmallTextPad" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Ricardo Wagemaker"},"description":"A lightweight Java text editor with encryption and multi-language support","headline":"JAR Build Guide - SmallTextPad","url":"http://localhost:4000/README-jar.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/assets/css/style.css?v=">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">JAR Build Guide - SmallTextPad</h1>
+      <h2 class="project-tagline">A lightweight Java text editor with encryption and multi-language support</h2>
+      
+      
+        <a href="" class="btn">Download .zip</a>
+        <a href="" class="btn">Download .tar.gz</a>
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <p><a href="index.html">← Back to Home</a></p>
+
+<h1 id="jar-build-for-smalltextpad">JAR Build for SmallTextPad</h1>
+
+<p>This guide covers building the standalone JAR file for SmallTextPad, a lightweight Java text editor with encryption and multi-language support.</p>
+
+<h2 id="files">Files</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">build-jar.sh</code> - Script to compile sources and build the standalone JAR file</li>
+  <li><code class="language-plaintext highlighter-rouge">README-jar.md</code> - This documentation file</li>
+</ul>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<h3 id="system-requirements">System Requirements</h3>
+<ul>
+  <li>Java 21+ JDK installed</li>
+  <li>Standard Unix tools (bash, find)</li>
+</ul>
+
+<h3 id="installing-build-dependencies">Installing Build Dependencies</h3>
+
+<p><strong>Fedora/RHEL/CentOS:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>dnf <span class="nb">install </span>java-21-openjdk-devel
+</code></pre></div></div>
+
+<p><strong>Ubuntu/Debian:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>openjdk-21-jdk
+</code></pre></div></div>
+
+<p><strong>openSUSE:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>zypper <span class="nb">install </span>java-21-openjdk-devel
+</code></pre></div></div>
+
+<p><strong>macOS:</strong></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>openjdk@21
+</code></pre></div></div>
+
+<h2 id="building-the-jar-file">Building the JAR File</h2>
+
+<p>The build script can be run from anywhere in the project:</p>
+
+<h3 id="from-project-root">From Project Root:</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./packaging/build-jar.sh
+</code></pre></div></div>
+
+<h3 id="from-packaging-directory">From Packaging Directory:</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>packaging
+./build-jar.sh
+</code></pre></div></div>
+
+<p>The script will:</p>
+<ol>
+  <li>Navigate to the project root automatically</li>
+  <li>Delete any existing compiled class files</li>
+  <li>Generate a list of all Java source files</li>
+  <li>Compile all Java sources to the <code class="language-plaintext highlighter-rouge">bin/</code> directory</li>
+  <li>Copy resource bundles (<code class="language-plaintext highlighter-rouge">.properties</code> files) to the correct package structure</li>
+  <li>Copy image resources to the JAR root for classpath access</li>
+  <li>Copy dictionary files for spell-checking</li>
+  <li>Create the JAR file with proper manifest</li>
+  <li>Test launch the application</li>
+</ol>
+
+<h2 id="build-output">Build Output</h2>
+
+<p>After successful build:</p>
+<ul>
+  <li><strong>JAR file:</strong> <code class="language-plaintext highlighter-rouge">classes/artifacts/SmallTextPad.jar</code></li>
+  <li><strong>Compiled classes:</strong> <code class="language-plaintext highlighter-rouge">bin/</code> directory</li>
+  <li><strong>Source list:</strong> <code class="language-plaintext highlighter-rouge">sources.txt</code> (generated during build)</li>
+</ul>
+
+<h2 id="running-the-jar">Running the JAR</h2>
+
+<h3 id="direct-execution">Direct Execution:</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-jar</span> classes/artifacts/SmallTextPad.jar
+</code></pre></div></div>
+
+<h3 id="with-file-argument">With File Argument:</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-jar</span> classes/artifacts/SmallTextPad.jar /path/to/file.txt
+</code></pre></div></div>
+
+<h3 id="using-desktop-environment">Using Desktop Environment:</h3>
+<p>On systems with desktop integration, you can double-click the JAR file if <code class="language-plaintext highlighter-rouge">.jar</code> files are associated with Java.</p>
+
+<h2 id="jar-contents">JAR Contents</h2>
+
+<p>The JAR file includes:</p>
+<ul>
+  <li><strong>Compiled classes:</strong> All Java classes in proper package structure</li>
+  <li><strong>Resource bundles:</strong> Language files (English, Dutch, Polish, Portuguese)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">wagemaker/co/uk/lang/LabelsBundle_*.properties</code></li>
+    </ul>
+  </li>
+  <li><strong>Images:</strong> Application icons and toolbar images at JAR root
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">about.png</code>, <code class="language-plaintext highlighter-rouge">copy.png</code>, <code class="language-plaintext highlighter-rouge">cut.png</code>, <code class="language-plaintext highlighter-rouge">paste.png</code>, etc.</li>
+    </ul>
+  </li>
+  <li><strong>Dictionaries:</strong> Spell-check dictionaries
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">dic/Dictionary_en.txt</code></li>
+      <li><code class="language-plaintext highlighter-rouge">dic/Dictionary_nl.txt</code></li>
+    </ul>
+  </li>
+  <li><strong>Manifest:</strong> Proper Main-Class definition for executable JAR</li>
+</ul>
+
+<h2 id="distribution">Distribution</h2>
+
+<p>The generated JAR is a fully self-contained executable that can be:</p>
+<ul>
+  <li>Copied to any system with Java 21+ installed</li>
+  <li>Distributed via download links</li>
+  <li>Included in other packaging formats (RPM, DEB, Snap, etc.)</li>
+  <li>Run without installation</li>
+</ul>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="build-fails---javac-not-found">Build Fails - javac not found:</h3>
+<p>Ensure Java JDK is installed and <code class="language-plaintext highlighter-rouge">javac</code> is in your PATH:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>which javac
+javac <span class="nt">-version</span>
+</code></pre></div></div>
+
+<h3 id="application-doesnt-launch">Application Doesn’t Launch:</h3>
+<p>Verify Java runtime is installed:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java <span class="nt">-version</span>
+</code></pre></div></div>
+
+<h3 id="missing-resources-error">Missing Resources Error:</h3>
+<p>If you see <code class="language-plaintext highlighter-rouge">MissingResourceException</code> or <code class="language-plaintext highlighter-rouge">NullPointerException</code> for resources:</p>
+<ol>
+  <li>Clean and rebuild:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm</span> <span class="nt">-rf</span> bin/ classes/artifacts/
+./packaging/build-jar.sh
+</code></pre></div>    </div>
+  </li>
+  <li>Verify JAR contents:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jar tf classes/artifacts/SmallTextPad.jar | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"(</span><span class="se">\.</span><span class="s2">properties</span><span class="nv">$|</span><span class="se">\.</span><span class="s2">png</span><span class="nv">$)</span><span class="s2">"</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="permission-denied">Permission Denied:</h3>
+<p>Make the script executable:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> +x packaging/build-jar.sh
+</code></pre></div></div>
+
+<h2 id="development-workflow">Development Workflow</h2>
+
+<p>For rapid development and testing:</p>
+
+<ol>
+  <li><strong>Edit source files</strong> in <code class="language-plaintext highlighter-rouge">src/</code> directory</li>
+  <li><strong>Run build script</strong> to compile and test:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./packaging/build-jar.sh
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Application launches automatically</strong> for testing</li>
+  <li><strong>Close application</strong> and repeat as needed</li>
+</ol>
+
+<p>The script automatically cleans previous builds, so you always get a fresh compile.</p>
+
+<h2 id="notes">Notes</h2>
+
+<ul>
+  <li>The build script uses <code class="language-plaintext highlighter-rouge">set -euo pipefail</code> to exit immediately on any error</li>
+  <li>Deprecation warnings during compilation are enabled with <code class="language-plaintext highlighter-rouge">-Xlint:deprecation</code></li>
+  <li>The script supports being run from any directory - it automatically finds the project root</li>
+  <li>The JAR manifest specifies <code class="language-plaintext highlighter-rouge">wagemaker.co.uk.main.Launcher</code> as the Main-Class</li>
+</ul>
+
+<h2 id="see-also">See Also</h2>
+
+<ul>
+  <li><a href="README-rpm.html">RPM Build Guide</a> - Building RPM packages for Fedora/RHEL/openSUSE</li>
+  <li><a href="README-snap.html">Snap Build Guide</a> - Building Snap packages for universal Linux distribution</li>
+  <li><a href="README-windows.html">Windows Build Guide</a> - Building Windows installers and portable packages</li>
+  <li><a href="index.html">Back to Home</a> - Main documentation and downloads</li>
+</ul>
+
+
+      <footer class="site-footer">
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
