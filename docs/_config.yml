@@ -1,0 +1,6 @@
+title: SmallTextPad
+description: A lightweight Java text editor with encryption and multi-language support
+theme: jekyll-theme-cayman
+show_downloads: true
+github:
+  repository_url: https://github.com/gcclinux/smalltextpad
