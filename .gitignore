@@ -60,6 +60,9 @@ Thumbs.db
 
 # Ignore local run files
 /run/
+/parts/
+/prime/
+/stage/
 
 # Keep this file tracked
 

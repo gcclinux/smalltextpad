@@ -8,18 +8,18 @@ description: |
   and multi-language support. Features include basic editing, undo/redo, 
   printing, and encrypted file format (.sstp).
 
-website: https://github.com/gcclinux/smalltextpad
+website: https://gcclinux.github.io/smalltextpad/
 source-code: https://github.com/gcclinux/smalltextpad
 issues: https://github.com/gcclinux/smalltextpad/issues
 contact: https://github.com/gcclinux/smalltextpad/discussions
 license: MIT
-donation: https://github.com/sponsors/gcclinux
+donation: https://buymeacoffee.com/gcclinux
 
 grade: stable
 confinement: strict
 
 architectures:
-  - build-on: amd64
+  - build-on: arm64
 
 apps:
   smalltextpad:
@@ -41,7 +41,7 @@ parts:
     source: .
     build-packages: []
     stage-packages:
-      - openjdk-21-jre
+      - openjdk-17-jre
     build-attributes:
       - no-patchelf
     override-build: |
