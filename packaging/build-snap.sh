@@ -5,8 +5,12 @@
 # Exits on any error
 set -euo pipefail
 
-# Run from the repository root (script lives in repo root)
-cd "$(dirname "$0")"
+# Change to the repository root (script lives in packaging/)
+# Resolve the script directory reliably and then cd to its parent (repo root).
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "$script_dir/.." && pwd)"
+echo "[run] changing to repo root: $repo_root"
+cd "$repo_root"
 
 # Ensure required tools exist
 command -v find >/dev/null 2>&1 || { echo "find command not found" >&2; exit 1; }
