@@ -1,6 +1,6 @@
 Name:           smalltextpad
-Version:        1.5.0
-Release:        2%{?dist}
+Version:        1.5.1
+Release:        3%{?dist}
 Summary:        A lightweight Java text editor with encryption and multi-language support
 
 License:        Custom
@@ -133,7 +133,9 @@ fi
 %{_datadir}/icons/hicolor/1024x1024/apps/%{name}.png
 
 %changelog
-* Fri Jan 10 2025 Ricardo Wagemaker <maintainer@example.com> - 1.5.0-1
+* Sun Oct 12 2025 Ricardo Wagemaker <wagemra@gmail.com> - 1.5.1-3
+- Fixed opening encrypted files by EasyEdit App
+* Fri Jan 10 2025 Ricardo Wagemaker <wagemra@gmail.com> - 1.5.0-1
 - Initial RPM package for SmallTextPad
 - Lightweight Java text editor with encryption support
 - Multi-language support included

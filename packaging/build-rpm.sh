@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # RPM build script for SmallTextPad
 # This script prepares the source tarball and builds the RPM package
 
@@ -6,7 +6,7 @@ set -euo pipefail
 
 # Configuration
 PACKAGE_NAME="smalltextpad"
-VERSION="1.5.0"
+VERSION="1.5.1"
 SPEC_FILE="smalltextpad.spec"
 
 # Get script directory

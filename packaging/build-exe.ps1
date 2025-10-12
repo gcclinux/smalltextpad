@@ -1,6 +1,6 @@
 # Create a Windows installer EXE using jpackage
-# Usage: .\jpackage.ps1
-# Requires a JDK 14+ with jpackage on PATH
+# Usage: .\jbuild-exe.ps1
+# Requires a JDK 21+ with jpackage on PATH
 # Requires choco install wixtoolset -y
 
 $ErrorActionPreference = 'Stop'

@@ -15,11 +15,11 @@ fi
 
 # SmallTextPad DEB Package Builder
 APP_NAME="smalltextpad"
-VERSION="1.5.0"
+VERSION="1.5.1"
 ARCH="amd64"
 MAINTAINER="Ricardo Wagemaker <wagemra@gmail.com>"
 DESCRIPTION="SmallTextPad - Simple Java Text Editor with Encryption"
-HOMEPAGE="https://github.com/gcclinux/smalltextpad"
+HOMEPAGE="https://gcclinux.github.io/smalltextpad/"
 
 # Create package structure
 DEB_DIR="${APP_NAME}_${VERSION}_${ARCH}"
@@ -36,7 +36,7 @@ Version: $VERSION
 Section: editors
 Priority: optional
 Architecture: $ARCH
-Depends: openjdk-21-jre | openjdk-17-jre | openjdk-11-jre
+Depends: openjdk-21-jre
 Maintainer: $MAINTAINER
 Description: $DESCRIPTION
  SmallTextPad is a lightweight Java text editor with optional file encryption

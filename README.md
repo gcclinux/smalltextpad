@@ -14,7 +14,7 @@ SmallTextPad is a lightweight text editor written in Java (Swing). It includes b
 ## Quick facts
 
 - Project: SmallTextPad
-- Version: 1.5.0
+- Version: 1.5.1
 - Author: Ricardo Wagemaker
 - Main class: `wagemaker.co.uk.main.Launcher`
 - License: See `LICENSE` and `doc/SmallTextPadLicense.txt`
