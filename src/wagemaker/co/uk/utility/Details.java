@@ -11,7 +11,7 @@ public class Details {
 	public static String Developer = "Ricardo Wagemaker";
 	public static String Header = "SmallTextPad";
 
-	public static String Version = "1.5.0";
+	public static String Version = "1.5.1";
 	public static String Title = "SmallTextPad";
 	public static String versionFile = "https://github.com/gcclinux/smalltextpad/releases/latest";
 	public static String remoteLicense = "https://github.com/gcclinux/smalltextpad";
