@@ -18,19 +18,20 @@ A lightweight Java text editor with encryption and multi-language support.
 
 ## Download
 
-[Latest Release v1.5.0](https://github.com/gcclinux/smalltextpad/releases/latest)
+[Latest Release v1.5.1](https://github.com/gcclinux/smalltextpad/releases/latest)
 
 ### Available Packages
 
-| Package | Platform | Size | SHA256 |
-|---------|----------|------|--------|
-| [SmallTextPad.jar](https://github.com/gcclinux/smalltextpad/releases/latest/download/SmallTextPad.jar) | All (Java 21+) | 2.97 MB | `4649f0ea...` |
-| [smalltextpad_1.5.0_amd64.snap](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad_1.5.0_amd64.snap) | Linux (amd64) | 122 MB | `35e876ff...` |
-| [smalltextpad_1.5.0_arm64.snap](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad_1.5.0_arm64.snap) | Linux (arm64) | 130 MB | `d7727f78...` |
-| [smalltextpad_1.5.0_amd64.deb](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad_1.5.0_amd64.deb) | Debian/Ubuntu | 2.92 MB | `43beb170...` |
-| [smalltextpad-1.5.0-2.fc42.noarch.rpm](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad-1.5.0-2.fc42.noarch.rpm) | Fedora/RHEL | 2.93 MB | `7ae8e8f1...` |
-| [SmallTextPadSetup.exe](https://github.com/gcclinux/smalltextpad/releases/latest/download/SmallTextPadSetup.exe) | Windows | 34.9 MB | `38955432...` |
-| [SmallTextPad-windows-appimage.zip](https://github.com/gcclinux/smalltextpad/releases/latest/download/SmallTextPad-windows-appimage.zip) | Windows (portable) | 47 MB | `da05350f...` |
+| Package | Platform | Size |
+|---------|----------|------|
+| [SmallTextPad.jar](https://github.com/gcclinux/smalltextpad/releases/latest/download/SmallTextPad.jar) | All (Java 21+) | 2.03 MB |
+| [smalltextpad_1.5.1_amd64.snap](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad_1.5.1_amd64.snap) | Linux (amd64) | 130 MB |
+| [smalltextpad_1.5.1_arm64.snap](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad_1.5.1_arm64.snap) | Linux (arm64) | 130 MB |
+| [smalltextpad_1.5.1_amd64.deb](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad_1.5.1_amd64.deb) | Debian/Ubuntu | 2.92 MB |
+| [smalltextpad-1.5.1-3.fc42.noarch.rpm](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad-1.5.1-3.fc42.noarch.rpm) | Fedora/RHEL | 2.93 MB |
+| [smalltextpad-1.5.1-3.fc42.src.rpm](https://github.com/gcclinux/smalltextpad/releases/latest/download/smalltextpad-1.5.1-3.fc42.src.rpm) | Fedora source RPM | 2 MB |
+| [SmallTextPad-x86_64-1.5.1-3.flatpak](https://github.com/gcclinux/smalltextpad/releases/latest/download/SmallTextPad-x86_64-1.5.1-3.flatpak) | Flatpak (x86_64) | 41.3 MB |
+| [SmallTextPad-windows-appimage.zip](https://github.com/gcclinux/smalltextpad/releases/latest/download/SmallTextPad-windows-appimage.zip) | Windows (portable) | 47 MB |
 
 ## Installation
 
@@ -44,12 +45,32 @@ sudo snap install smalltextpad
 
 ### DEB (Debian/Ubuntu)
 ```bash
-sudo dpkg -i smalltextpad_1.5.0_amd64.deb
+sudo dpkg -i smalltextpad_1.5.1_amd64.deb
 ```
 
 ### RPM (Fedora/RHEL)
 ```bash
-sudo rpm -ivh smalltextpad-1.5.0-1.noarch.rpm
+sudo rpm -ivh smalltextpad-1.5.1-3.fc42.noarch.rpm
+```
+
+### Flatpak (Linux)
+If you use Flatpak (Flathub) you can install the app from the remote (if published):
+```bash
+flatpak install flathub io.github.gcclinux.SmallTextPad
+```
+
+To install the provided local Flatpak bundle file (downloaded from the release page):
+```bash
+# install for the current user
+flatpak install --user --reinstall ./SmallTextPad-x86_64-1.5.1-3.flatpak
+
+# or system-wide (requires sudo)
+sudo flatpak install --reinstall ./SmallTextPad-x86_64-1.5.1-3.flatpak
+```
+
+Run after install:
+```bash
+flatpak run io.github.gcclinux.SmallTextPad
 ```
 
 ### JAR (All platforms)
