@@ -295,7 +295,12 @@ import java.util.List;
 						   }
 						   
 						   if ((codeGet != null) && (codeGet.length() > 0)) {
-								File varDecryptedFile = new File(filePath);
+								// Use the same logic as STPFileCrypter to determine the actual decrypted file path
+								String decryptedPath = filePath;
+								if (decryptedPath.lastIndexOf(".") == -1 || decryptedPath.lastIndexOf(".") < decryptedPath.lastIndexOf(File.separator)) {
+									decryptedPath = decryptedPath + ".txt";
+								}
+								File varDecryptedFile = new File(decryptedPath);
 								String decryptFile = varDecryptedFile.toString();
 								
 									   if(decryptFile.endsWith(".txt")) {
@@ -312,7 +317,7 @@ import java.util.List;
 	
 										   setTitle(Title+" ~ " + varDecryptedFile.getName());
 										   FileTitle = varDecryptedFile.getName();
-										   FullPathName = filePath;
+										   FullPathName = decryptedPath;
 										   FilePathTrue = file;
 									   } 	
 									   
@@ -683,7 +688,12 @@ import java.util.List;
 							   }
 							   
 							   if ((codeGet != null) && (codeGet.length() > 0)) {
-									File varDecryptedFile = new File(filePath);
+									// Use the same logic as STPFileCrypter to determine the actual decrypted file path
+									String decryptedPath = filePath;
+									if (decryptedPath.lastIndexOf(".") == -1 || decryptedPath.lastIndexOf(".") < decryptedPath.lastIndexOf(File.separator)) {
+										decryptedPath = decryptedPath + ".txt";
+									}
+									File varDecryptedFile = new File(decryptedPath);
 									String decryptFile = varDecryptedFile.toString();
 									
 										   if(decryptFile.endsWith(".txt")) {
@@ -700,7 +710,7 @@ import java.util.List;
 	
 											   setTitle(Title+" ~ " + varDecryptedFile.getName());
 											   FileTitle = varDecryptedFile.getName();
-											   FullPathName = filePath;
+											   FullPathName = decryptedPath;
 											   FilePathTrue = file;
 										   } 	
 							   }
@@ -1013,10 +1023,10 @@ import java.util.List;
 
 								dlg.getContentPane().add(contentPanel);
 								dlg.pack();
-								// Scale dialog: increase width by 20% and decrease height by 30%
+								// Scale dialog: make it wider and taller for better visibility
 								java.awt.Dimension d = dlg.getSize();
-								int newW = Math.max((int) Math.round(d.width * 1.2), d.width + 20);
-								int newH = Math.max((int) Math.round(d.height * 0.7), 48);
+								int newW = Math.max((int) Math.round(d.width * 1.5), d.width + 60);
+								int newH = Math.max((int) Math.round(d.height * 1.0), d.height + 20);
 								dlg.setSize(newW, newH);
 								dlg.setResizable(false);
 								// Use the same robust centering approach as PasswordPrompter:
@@ -1520,7 +1530,12 @@ import java.util.List;
 						   }
 						   
 						   if ((codeGet != null) && (codeGet.length() > 0)) {
-								File varDecryptedFile = new File(filePath);
+								// Use the same logic as STPFileCrypter to determine the actual decrypted file path
+								String decryptedPath = filePath;
+								if (decryptedPath.lastIndexOf(".") == -1 || decryptedPath.lastIndexOf(".") < decryptedPath.lastIndexOf(File.separator)) {
+									decryptedPath = decryptedPath + ".txt";
+								}
+								File varDecryptedFile = new File(decryptedPath);
 								String decryptFile = varDecryptedFile.toString();
 								
 									   if(decryptFile.endsWith(".txt")) {
@@ -1537,7 +1552,7 @@ import java.util.List;
 	
 										   setTitle(Title+" ~ " + varDecryptedFile.getName());
 										   FileTitle = varDecryptedFile.getName();
-										   FullPathName = filePath;
+										   FullPathName = decryptedPath;
 										   FilePathTrue = file;
 									   } 	
 						   }
