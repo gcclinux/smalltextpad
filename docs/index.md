@@ -67,6 +67,7 @@ Want to build SmallTextPad from source or create packages for distribution? Chec
 |--------|----------|---------------|
 | **JAR** | All Platforms | [📄 JAR Build Guide](README-jar.html) |
 | **Snap** | Linux Universal | [📄 Snap Build Guide](README-snap.html) |
+| **Flatpak** | Linux Universal | [📄 Flatpak Build Guide](README-flatpak.html) |
 | **RPM** | Fedora/RHEL/openSUSE | [📄 RPM Build Guide](README-rpm.html) |
 | **Windows** | Windows | [📄 Windows Build Guide](README-windows.html) |
 

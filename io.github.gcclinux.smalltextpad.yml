@@ -1,0 +1,151 @@
+app-id: io.github.gcclinux.smalltextpad
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk21
+command: smalltextpad
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --device=dri
+  - --filesystem=home
+  - --filesystem=xdg-documents
+  - --filesystem=xdg-desktop
+  - --filesystem=xdg-download
+  - --env=PATH=/app/jre/bin:/app/bin:/usr/bin
+  - --env=JAVA_HOME=/app/jre
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk21/install.sh
+
+  - name: smalltextpad
+    buildsystem: simple
+    build-commands:
+      # Compile Java sources using the OpenJDK from the extension
+      - find src/ -name "*.java" > sources.txt
+      - mkdir -p bin
+      - /usr/lib/sdk/openjdk21/bin/javac -d bin -Xlint:deprecation @sources.txt
+      
+      # Copy resource bundles (properties files) to bin
+      - mkdir -p bin/wagemaker/co/uk/lang
+      - cp src/wagemaker/co/uk/lang/*.properties bin/wagemaker/co/uk/lang/
+      
+      # Copy image resources into bin root so getResource("/name.png") works
+      - cp -r res/* bin/
+      
+      # Copy dictionaries to bin root
+      - cp -r dic bin/
+      
+      # Create JAR file with all resources included
+      - mkdir -p /app/share/smalltextpad
+      - /usr/lib/sdk/openjdk21/bin/jar cfm /app/share/smalltextpad/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin .
+      
+      # Install launcher script
+      - mkdir -p /app/bin
+      - |
+        cat > /app/bin/smalltextpad << 'EOF'
+        #!/bin/bash
+        exec java -jar /app/share/smalltextpad/SmallTextPad.jar "$@"
+        EOF
+      - chmod 755 /app/bin/smalltextpad
+      
+      # Install desktop file
+      - mkdir -p /app/share/applications
+      - |
+        cat > /app/share/applications/io.github.gcclinux.smalltextpad.desktop << 'EOF'
+        [Desktop Entry]
+        Version=1.0
+        Type=Application
+        Name=SmallTextPad
+        Comment=A lightweight Java text editor with encryption and multi-language support
+        Comment[es]=Un editor de texto ligero en Java con cifrado y soporte multi-idioma
+        Comment[fr]=Un éditeur de texte léger en Java avec chiffrement et support multi-langues
+        Comment[de]=Ein leichtgewichtiger Java-Texteditor mit Verschlüsselung und Mehrsprachunterstützung
+        Exec=smalltextpad %F
+        Icon=io.github.gcclinux.smalltextpad
+        Terminal=false
+        StartupNotify=true
+        MimeType=text/plain;text/x-java;application/x-smalltextpad-encrypted;
+        Categories=Office;TextEditor;Development;
+        Keywords=text;editor;java;encryption;
+        StartupWMClass=SmallTextPad
+        EOF
+      
+      # Install icons (Flatpak max size is 512x512)
+      - mkdir -p /app/share/icons/hicolor/128x128/apps
+      - mkdir -p /app/share/icons/hicolor/256x256/apps
+      - mkdir -p /app/share/icons/hicolor/512x512/apps
+      - cp res/smalltextpad_128x128.png /app/share/icons/hicolor/128x128/apps/io.github.gcclinux.smalltextpad.png
+      - cp res/smalltextpad_256x256.png /app/share/icons/hicolor/256x256/apps/io.github.gcclinux.smalltextpad.png
+      # Create 512x512 icon from 1024x1024 using ImageMagick if available, otherwise skip
+      - |
+        if command -v convert >/dev/null 2>&1; then
+          convert res/smalltextpad_1024x1024.png -resize 512x512 /app/share/icons/hicolor/512x512/apps/io.github.gcclinux.smalltextpad.png
+        else
+          # Fallback: use 256x256 as 512x512 (will be upscaled by system)
+          cp res/smalltextpad_256x256.png /app/share/icons/hicolor/512x512/apps/io.github.gcclinux.smalltextpad.png
+        fi
+      
+      # Install AppStream metadata
+      - mkdir -p /app/share/metainfo
+      - |
+        cat > /app/share/metainfo/io.github.gcclinux.smalltextpad.metainfo.xml << 'EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <component type="desktop-application">
+          <id>io.github.gcclinux.smalltextpad</id>
+          <metadata_license>CC0-1.0</metadata_license>
+          <project_license>MIT</project_license>
+          <name>SmallTextPad</name>
+          <summary>A lightweight Java text editor with encryption and multi-language support</summary>
+          <description>
+            <p>
+              SmallTextPad is a lightweight text editor written in Java (Swing). It includes 
+              basic editing features, undo/redo, printing, and a simple file encryption format 
+              (.sstp). The application supports multiple languages and provides a clean, 
+              simple interface for text editing tasks.
+            </p>
+            <p>Features:</p>
+            <ul>
+              <li>Basic text editing with undo/redo</li>
+              <li>File encryption with .sstp format</li>
+              <li>Multi-language support</li>
+              <li>Print functionality</li>
+              <li>Lightweight and fast</li>
+              <li>Cross-platform Java application</li>
+            </ul>
+          </description>
+          <launchable type="desktop-id">io.github.gcclinux.smalltextpad.desktop</launchable>
+          <screenshots>
+            <screenshot type="default">
+              <caption>Main editor window</caption>
+              <image>https://gcclinux.github.io/smalltextpad/screenshots/main.png</image>
+            </screenshot>
+          </screenshots>
+          <url type="homepage">https://gcclinux.github.io/smalltextpad/</url>
+          <url type="bugtracker">https://github.com/gcclinux/smalltextpad/issues</url>
+          <developer_name>Ricardo Wagemaker</developer_name>
+          <releases>
+            <release version="1.5.1" date="2025-01-10">
+              <description>
+                <p>Bug fixes and improvements</p>
+              </description>
+            </release>
+          </releases>
+          <content_rating type="oars-1.1" />
+        </component>
+        EOF
+      
+      # Install documentation
+      - mkdir -p /app/share/doc/smalltextpad
+      - cp README.md /app/share/doc/smalltextpad/
+      - cp LICENSE /app/share/doc/smalltextpad/
+      - if [ -f doc/SmallTextPadLicense.txt ]; then cp doc/SmallTextPadLicense.txt /app/share/doc/smalltextpad/; fi
+
+    sources:
+      - type: dir
+        path: .

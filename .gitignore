@@ -9,6 +9,8 @@
 /build/
 /classes/
 /artifacts/
+.flatpak-builder
+/flatpak-repo/
 
 # IntelliJ IDEA
 /.idea/
