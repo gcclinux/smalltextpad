@@ -11,6 +11,8 @@
 /artifacts/
 .flatpak-builder
 /flatpak-repo/
+/flatpak-build/
+/repo/
 
 # IntelliJ IDEA
 /.idea/
