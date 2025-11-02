@@ -11,8 +11,12 @@ command -v find >/dev/null 2>&1 || { echo "find command not found" >&2; exit 1; 
 command -v javac >/dev/null 2>&1 || { echo "javac not found in PATH" >&2; exit 1; }
 command -v java >/dev/null 2>&1 || { echo "java not found in PATH" >&2; exit 1; }
 
-echo "[run] Deleting compiled class files under bin/"
-find bin/ -name "*.class" -delete
+echo "[run] Preparing bin directory"
+mkdir -p bin
+if [ -d "bin" ] && [ "$(find bin -name "*.class" 2>/dev/null)" ]; then
+    echo "[run] Deleting compiled class files under bin/"
+    find bin/ -name "*.class" -delete
+fi
 
 echo "[run] Rebuilding sources.txt from src/"
 find src/ -name "*.java" > sources.txt
