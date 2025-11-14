@@ -26,8 +26,11 @@ find src/ -name "*.java" > sources.txt
 echo "[run] Compiling Java sources to bin/"
 javac -d bin @sources.txt
 
+echo "[run] Copying resource files (.properties, etc.) to bin/"
+find src -type f \( -name "*.properties" \) -exec sh -c 'mkdir -p "bin/$(dirname "${1#src/}")" && cp "$1" "bin/${1#src/}"' _ {} \;
+
 echo "[run] Now creating SmallTextPad.jar in the current directory"
-jar cfm classes/artifacts/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin . -C . res -C . dic
+jar cfm classes/artifacts/SmallTextPad.jar src/META-INF/MANIFEST.MF -C bin . -C res . -C dic .
 
 echo "[run] Now creating smalltextpad_<version>_amd64.snap in the current directory"
 snapcraft pack --output=classes/artifacts/smalltextpad_$(grep '^version:' snap/snapcraft.yaml | awk '{print $2}' | tr -d "'")_amd64.snap

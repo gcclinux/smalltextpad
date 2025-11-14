@@ -41,9 +41,13 @@ parts:
     source: .
     build-packages: []
     stage-packages:
-      - openjdk-17-jre
+      - openjdk-21-jre
     build-attributes:
       - no-patchelf
+    override-prime: |
+      craftctl default
+      # Remove problematic external symlinks that snap store doesn't allow
+      rm -f usr/lib/jvm/java-21-openjdk-amd64/lib/security/cacerts || true
     override-build: |
       # Create wrapper script
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
@@ -51,7 +55,13 @@ parts:
       #!/bin/bash
       export JAVA_HOME=$(find $SNAP/usr/lib/jvm -name "java-*-openjdk-*" -type d | head -1)
       export DISPLAY=${DISPLAY:-:0}
-      exec $JAVA_HOME/bin/java -jar $SNAP/SmallTextPad.jar "$@"
+      
+      # Use SNAP_USER_COMMON as the home directory for Java
+      # This makes the app store its config in ~/snap/smalltextpad/common/.config/
+      mkdir -p "$SNAP_USER_COMMON/.config"
+      
+      cd $SNAP
+      exec $JAVA_HOME/bin/java -Duser.home="$SNAP_USER_COMMON" -jar $SNAP/SmallTextPad.jar "$@"
       EOF
       chmod +x $SNAPCRAFT_PART_INSTALL/bin/smalltextpad
       
