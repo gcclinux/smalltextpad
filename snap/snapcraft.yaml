@@ -1,6 +1,6 @@
 name: smalltextpad
-base: core22
-version: '1.5.1'
+base: core24
+version: '1.5.2'
 title: SmallTextPad
 summary: SmallTextPad - Simple Java Text Editor with Encryption
 description: |
@@ -18,8 +18,8 @@ donation: https://buymeacoffee.com/gcclinux
 grade: stable
 confinement: strict
 
-architectures:
-  - build-on: amd64
+platforms:
+  amd64:
 
 apps:
   smalltextpad:
